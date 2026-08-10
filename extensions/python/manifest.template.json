@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 3,
+  "id": "dev.foldcode.python",
+  "name": "Python",
+  "version": "3.14.6+6",
+  "publisher": "FoldCode",
+  "minimumHostVersionCode": 1,
+  "description": "CPython 3.14, pip, curated Android wheels, Jedi completion, live diagnostics and Pico MicroPython intelligence on Android ARM64.",
+  "provides": ["command:python", "command:python3", "command:pip", "command:pip3", "language:python", "language:micropython", "intelligence:python", "intelligence:micropython", "diagnostics:python", "runtime:python:3.14"],
+  "legal": {
+    "notices": "licenses/THIRD_PARTY_NOTICES.md",
+    "sources": "licenses/SOURCES.json"
+  },
+  "payloads": {
+    "python-runtime-arm64.zip": "__PYTHON_RUNTIME_SHA256__"
+  }
+}

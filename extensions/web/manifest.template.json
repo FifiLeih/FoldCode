@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 3,
+  "id": "dev.foldcode.web",
+  "name": "Web Development",
+  "version": "1.0.0+10",
+  "publisher": "FoldCode",
+  "minimumHostVersionCode": 1,
+  "description": "Node.js 24 LTS, npm 12, TypeScript 5.9, React 19 and Vite 8 with dedicated TypeScript, HTML, CSS and JSON IntelliSense plus Node and WebView browser debugging on Android ARM64.",
+  "provides": ["command:node", "command:npm", "command:npx", "language:javascript", "language:typescript", "language:html", "language:css", "language:json", "language-server:typescript", "language-server:html", "language-server:css", "language-server:json", "debugger:v8", "debugger:webview-cdp"],
+  "legal": {
+    "notices": "licenses/THIRD_PARTY_NOTICES.md",
+    "sources": "licenses/SOURCES.json"
+  },
+  "payloads": {
+    "web-runtime-arm64.zip": "__WEB_RUNTIME_SHA256__"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 3,
+  "id": "dev.foldcode.pico",
+  "name": "Raspberry Pi Pico",
+  "version": "2.3.0+18",
+  "publisher": "FoldCode",
+  "minimumHostVersionCode": 1,
+  "description": "Offline C/C++ and GNU assembly builds, official MicroPython firmware, SDK libraries, pioasm integration and USB deployment for RP2040 and RP2350.",
+  "provides": ["command:cmake", "command:ninja", "command:picotool", "command:pioasm", "sdk:pico:2.3.0", "runtime:micropython:1.28.0"],
+  "legal": {
+    "notices": "licenses/THIRD_PARTY_NOTICES.md",
+    "sources": "licenses/SOURCES.json"
+  },
+  "payloads": {
+    "picotool-runtime.zip": "02877befa28cbc9045522ee8268b678ba5445559655f550824a8fb4dd8792c1e",
+    "cmake-data.zip": "c0b4682109532231d4ca139983c9b412efc4098075192f1b0d6a91c1098cf7c8",
+    "micropython-pico2_w.zip": "d72d44d595bc8a054d2a807c9094bffb86a6dff9b1a1521e35c7f6f0af502fe2",
+    "micropython-pico_w.zip": "7c8c7b9893a188a423bef1f8955f9658bb465aa43713b81b49d87a54e549983d",
+    "micropython-rp2040.zip": "054feff85e41478f2b772ac0d85645aa462c4f758b8e4e1cf36a8d2afa32f501",
+    "micropython-rp2350-riscv.zip": "87ee370dd84b662134c2b7a688c8de113ebe8d0d2f4780e2129bb9c6abb36f34",
+    "micropython-rp2350.zip": "277b4cd381961b3df65dc2fa67581a8388fa09c1747f607bc7cbb13ebf2b5a89",
+    "pico-cmake-sdk.zip": "f336a0c154161a43ce847058987a05efe76374a2809fb285cfc220d23812b6bb",
+    "pico-profile-pico2_w.zip": "83c65609abc8ebc5d77a0b16fbf0f6ddb86fe1f68193762f7507844ad40ed51e",
+    "pico-profile-pico_w.zip": "05498156b3171c043ae9f5a50199583f891dba42f8b7b18454d97f60a5057213",
+    "pico-profile-rp2040.zip": "10a81e2ec53a98a5669ca18bcbc8e9823ec1fe9da5109db6111d286177cb5a33",
+    "pico-profile-rp2350-riscv.zip": "19b76503a8ed49136b5faa9ef1da1f4f0fc94f5cc0b48c362433522d46dc681e",
+    "pico-profile-rp2350.zip": "ada18c77c4ba2179d816aaf3809970179d0dc6d5a2d9ccd8cc0214b7e8e7f7be",
+    "pico-toolchain-arm.zip": "c34f22b6ee50e7d28020cba144febad20e188e0fc10f82d2dc9b8e5eb159828d",
+    "pico-toolchain-riscv.zip": "b2c3772ee069f0d10d6a456e8639f0b672b17abf12b878539332527d0be9371e"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "extensionId": "dev.foldcode.gnu-languages",
+  "components": [
+    {"name":"Debian GNU compiler runtime package set","version":"Debian 12 Bookworm current pinned package set","license":"Per-package Debian copyright metadata","upstream":"https://deb.debian.org/debian/","source":"https://sources.debian.org/"},
+    {"name":"GCC and GFortran","version":"Debian Bookworm package version","license":"GPL-3.0-or-later WITH GCC-exception-3.1","upstream":"https://gcc.gnu.org/"},
+    {"name":"GnuCOBOL","version":"Debian Bookworm gnucobol3 package version","license":"GPL-3.0-or-later and LGPL-3.0-or-later runtime","upstream":"https://gnucobol.sourceforge.io/"},
+    {"name":"GNU C Library","version":"Debian Bookworm package version","license":"LGPL-2.1-or-later","upstream":"https://www.gnu.org/software/libc/"},
+    {"name":"GNU Binutils","version":"Debian Bookworm package version","license":"GPL-3.0-or-later","upstream":"https://www.gnu.org/software/binutils/"},
+    {"name":"libxml2","version":"Debian Bookworm package version","license":"MIT","upstream":"https://gitlab.gnome.org/GNOME/libxml2"}
+  ]
+}

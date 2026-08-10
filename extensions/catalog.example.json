@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 2,
+  "extensions": [
+    {
+      "id": "dev.foldcode.cpp",
+      "name": "C/C++",
+      "version": "1.0.0+3",
+      "publisher": "FoldCode",
+      "description": "Clang C/C++ compilation, persistent clangd intelligence, LLDB debugging and execution on Android ARM64.",
+      "dependencies": [],
+      "provides": ["command:clang", "command:clang++", "command:clangd", "command:ld.lld", "toolchain:clang-21", "language-server:cpp"],
+      "corePackage": {
+        "url": "packages/foldcode-cpp-1.0.0-3.fcex",
+        "sha256": "GENERATED_BY_PREPARE_EXTENSION_SERVER",
+        "sizeBytes": 1
+      },
+      "payloads": {
+        "cpp-runtime-arm64.zip": {
+          "url": "components/cpp-runtime-arm64.zip",
+          "sha256": "GENERATED_BY_PREPARE_EXTENSION_SERVER",
+          "sizeBytes": 1
+        }
+      }
+    },
+    {
+      "id": "dev.foldcode.python",
+      "name": "Python",
+      "version": "3.14.6+6",
+      "publisher": "FoldCode",
+      "description": "CPython 3.14, pip, project execution, build-script support and persistent offline Python completion.",
+      "dependencies": [],
+      "provides": ["command:python", "command:python3", "command:pip", "command:pip3", "language:python", "intelligence:python", "runtime:python:3.14"],
+      "corePackage": {
+        "url": "packages/foldcode-python-3.14.6-6.fcex",
+        "sha256": "GENERATED_BY_PREPARE_EXTENSION_SERVER",
+        "sizeBytes": 1
+      },
+      "payloads": {
+        "python-runtime-arm64.zip": {
+          "url": "components/python-runtime-arm64.zip",
+          "sha256": "GENERATED_BY_PREPARE_EXTENSION_SERVER",
+          "sizeBytes": 1
+        }
+      }
+    },
+    {
+      "id": "dev.foldcode.gnu-arm",
+      "name": "GNU Arm Embedded",
+      "version": "15.2.1+1",
+      "publisher": "FoldCode",
+      "description": "Official GCC 15.2 for GCC-specific Arm firmware projects.",
+      "dependencies": ["dev.foldcode.pico"],
+      "provides": ["command:arm-none-eabi-gcc", "command:arm-none-eabi-g++", "toolchain:gnu-arm-none-eabi"],
+      "corePackage": {
+        "url": "packages/foldcode-gnu-arm-15.2.1-1.fcex",
+        "sha256": "GENERATED_BY_PREPARE_EXTENSION_SERVER",
+        "sizeBytes": 1
+      },
+      "payloads": {
+        "gnu-arm-runtime.zip": {
+          "url": "components/gnu-arm-runtime.zip",
+          "sha256": "GENERATED_BY_PREPARE_EXTENSION_SERVER",
+          "sizeBytes": 1
+        }
+      }
+    },
+    {
+      "id": "dev.foldcode.pico",
+      "name": "Raspberry Pi Pico",
+      "version": "2.3.0+18",
+      "publisher": "FoldCode",
+      "description": "Pico SDK, board profiles, cross toolchains and GNU assembly support.",
+      "dependencies": ["dev.foldcode.cpp"],
+      "provides": ["command:cmake", "command:ninja", "command:picotool", "command:pioasm", "sdk:pico:2.3.0"],
+      "corePackage": {
+        "url": "packages/foldcode-pico-2.3.0-18.fcex",
+        "sha256": "GENERATED_BY_PREPARE_EXTENSION_SERVER",
+        "sizeBytes": 1
+      },
+      "payloads": {}
+    },
+    {
+      "id": "dev.foldcode.rust",
+      "name": "Rust",
+      "version": "1.0.0+4",
+      "publisher": "FoldCode",
+      "description": "Rust, Cargo, rustfmt and offline rust-analyzer intelligence with RP2040 and RP2350 targets.",
+      "dependencies": [],
+      "provides": ["command:rustc", "command:cargo", "command:rust-analyzer", "language:rust", "language-server:rust", "source:rust-stdlib"],
+      "corePackage": {
+        "url": "packages/foldcode-rust-1.0.0-4.fcex",
+        "sha256": "GENERATED_BY_PREPARE_EXTENSION_SERVER",
+        "sizeBytes": 1
+      },
+      "payloads": {
+        "rust-runtime-arm64.zip": {
+          "url": "components/rust-runtime-arm64.zip",
+          "sha256": "GENERATED_BY_PREPARE_EXTENSION_SERVER",
+          "sizeBytes": 1
+        }
+      }
+    },
+    {
+      "id": "dev.foldcode.gnu-languages",
+      "name": "Fortran & COBOL",
+      "version": "1.0.0+6",
+      "publisher": "FoldCode",
+      "description": "GNU Fortran and GnuCOBOL compilation, project-aware completion, diagnostics and console execution on Android ARM64.",
+      "dependencies": [],
+      "provides": ["language:fortran", "language:cobol", "intelligence:fortran", "intelligence:cobol", "command:gfortran", "command:cobc", "runtime:gnu-languages"],
+      "corePackage": {
+        "url": "packages/foldcode-gnu-languages-1.0.0-6.fcex",
+        "sha256": "GENERATED_BY_PREPARE_EXTENSION_SERVER",
+        "sizeBytes": 1
+      },
+      "payloads": {
+        "gnu-languages-runtime-arm64.zip": {
+          "url": "components/gnu-languages-runtime-arm64.zip",
+          "sha256": "GENERATED_BY_PREPARE_EXTENSION_SERVER",
+          "sizeBytes": 1
+        }
+      }
+    },
+    {
+      "id": "dev.foldcode.web",
+      "name": "Web Development",
+      "version": "1.0.0+10",
+      "publisher": "FoldCode",
+      "description": "Node.js, npm, JavaScript, TypeScript, React and browser preview with dedicated TypeScript, HTML, CSS and JSON IntelliSense on Android ARM64.",
+      "dependencies": [],
+      "provides": ["command:node", "command:npm", "command:npx", "language:javascript", "language:typescript", "language:html", "language:css", "language:json", "language-server:typescript", "language-server:html", "language-server:css", "language-server:json", "debugger:v8", "debugger:webview-cdp"],
+      "corePackage": {
+        "url": "packages/foldcode-web-1.0.0-10.fcex",
+        "sha256": "GENERATED_BY_PREPARE_EXTENSION_SERVER",
+        "sizeBytes": 1
+      },
+      "payloads": {
+        "web-runtime-arm64.zip": {
+          "url": "components/web-runtime-arm64.zip",
+          "sha256": "GENERATED_BY_PREPARE_EXTENSION_SERVER",
+          "sizeBytes": 1
+        }
+      }
+    }
+  ]
+}

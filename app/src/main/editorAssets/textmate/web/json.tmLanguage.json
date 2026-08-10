@@ -1,0 +1,1 @@
+{"scopeName":"source.json","patterns":[{"name":"string.quoted.double.json","begin":"\"","end":"\"","patterns":[{"name":"constant.character.escape.json","match":"\\\\."}]},{"name":"constant.numeric.json","match":"-?\\b\\d+(?:\\.\\d+)?(?:[eE][+-]?\\d+)?\\b"},{"name":"constant.language.json","match":"\\b(?:true|false|null)\\b"}]}

@@ -1,0 +1,17 @@
+--- a/tools/v8_gypfiles/v8.gyp
++++ b/tools/v8_gypfiles/v8.gyp
+@@ -1094,6 +1094,14 @@
+         '<@(inspector_all_sources)',
+       ],
+       'conditions': [
++        # Android cross builds run the host snapshot generator on macOS. The
++        # normal arm64 condition sees OS==android and omits this host code.
++        ['_toolset=="host" and host_os=="mac" and OS=="android" and v8_target_arch=="arm64" and v8_enable_webassembly==1', {
++          'sources': [
++            '<(V8_ROOT)/src/trap-handler/handler-inside-posix.cc',
++            '<(V8_ROOT)/src/trap-handler/handler-outside-posix.cc',
++          ],
++        }],
+         ['v8_enable_snapshot_compression==1', {
+           'sources': [
+             '<!@pymod_do_main(GN-scraper "<(V8_ROOT)/BUILD.gn"  "\\"v8_base_without_compiler.*?v8_enable_snapshot_compression.*?sources \\+= ")',

@@ -1,0 +1,42 @@
+{
+  "scopeName": "source.fortran",
+  "name": "Fortran",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#numbers" },
+    { "include": "#intrinsics" },
+    { "include": "#keywords" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        { "name": "comment.line.exclamation.fortran", "match": "!.*$" }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        { "name": "string.quoted.double.fortran", "begin": "\"", "end": "\"", "patterns": [{ "match": "\"\"", "name": "constant.character.escape.fortran" }] },
+        { "name": "string.quoted.single.fortran", "begin": "'", "end": "'", "patterns": [{ "match": "''", "name": "constant.character.escape.fortran" }] }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        { "name": "constant.numeric.fortran", "match": "(?i)\\b(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[ed][+-]?\\d+)?(?:_[a-z0-9_]+)?\\b" },
+        { "name": "constant.language.fortran", "match": "(?i)\\.(?:true|false)\\." }
+      ]
+    },
+    "intrinsics": {
+      "patterns": [
+        { "name": "support.function.intrinsic.fortran", "match": "(?i)\\b(?:abs|aimag|allocated|associated|ceiling|cmplx|cos|count|epsilon|exp|floor|huge|kind|len|lbound|log|max|maxval|min|minval|mod|present|product|random_number|reshape|selected_int_kind|selected_real_kind|sin|size|sqrt|sum|tiny|trim|ubound)\\b" }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        { "name": "storage.type.fortran", "match": "(?i)\\b(?:integer|real|double\\s+precision|complex|logical|character|type|class)\\b" },
+        { "name": "keyword.control.fortran", "match": "(?i)\\b(?:allocate|associate|block|call|case|close|contains|cycle|deallocate|do|else|elseif|end|endif|enddo|error\\s+stop|exit|forall|format|function|if|implicit|inquire|interface|module|none|only|open|print|private|procedure|program|public|read|return|select|stop|submodule|subroutine|then|use|where|while|write)\\b" },
+        { "name": "storage.modifier.fortran", "match": "(?i)\\b(?:allocatable|dimension|intent|optional|parameter|pointer|save|target|value)\\b" }
+      ]
+    }
+  }
+}

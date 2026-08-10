@@ -1,0 +1,76 @@
+{
+  "languages": [
+    {
+      "grammar": "textmate/cpp/cpp.tmLanguage.json",
+      "name": "cpp",
+      "scopeName": "source.cpp",
+      "languageConfiguration": "textmate/cpp/language-configuration.json"
+    },
+    {
+      "grammar": "textmate/rust/rust.tmLanguage.json",
+      "name": "rust",
+      "scopeName": "source.rust",
+      "languageConfiguration": "textmate/rust/language-configuration.json"
+    },
+    {
+      "grammar": "textmate/python/python.tmLanguage.json",
+      "name": "python",
+      "scopeName": "source.python",
+      "languageConfiguration": "textmate/python/language-configuration.json"
+    },
+    {
+      "grammar": "textmate/fortran/fortran.tmLanguage.json",
+      "name": "fortran",
+      "scopeName": "source.fortran",
+      "languageConfiguration": "textmate/fortran/language-configuration.json"
+    },
+    {
+      "grammar": "textmate/cobol/cobol.tmLanguage.json",
+      "name": "cobol",
+      "scopeName": "source.cobol",
+      "languageConfiguration": "textmate/cobol/language-configuration.json"
+    },
+    {
+      "grammar": "textmate/assembly/assembly.tmLanguage.json",
+      "name": "assembly",
+      "scopeName": "source.assembly",
+      "languageConfiguration": "textmate/assembly/language-configuration.json"
+    },
+    {
+      "grammar": "textmate/web/javascript.tmLanguage.json",
+      "name": "javascript",
+      "scopeName": "source.js",
+      "languageConfiguration": "textmate/web/javascript-language-configuration.json"
+    },
+    {
+      "grammar": "textmate/web/typescript.tmLanguage.json",
+      "name": "typescript",
+      "scopeName": "source.ts",
+      "languageConfiguration": "textmate/web/javascript-language-configuration.json"
+    },
+    {
+      "grammar": "textmate/web/typescriptreact.tmLanguage.json",
+      "name": "typescriptreact",
+      "scopeName": "source.tsx",
+      "languageConfiguration": "textmate/web/javascript-language-configuration.json"
+    },
+    {
+      "grammar": "textmate/web/html.tmLanguage.json",
+      "name": "html",
+      "scopeName": "text.html.basic",
+      "languageConfiguration": "textmate/web/html-language-configuration.json"
+    },
+    {
+      "grammar": "textmate/web/css.tmLanguage.json",
+      "name": "css",
+      "scopeName": "source.css",
+      "languageConfiguration": "textmate/web/css-language-configuration.json"
+    },
+    {
+      "grammar": "textmate/web/json.tmLanguage.json",
+      "name": "json",
+      "scopeName": "source.json",
+      "languageConfiguration": "textmate/web/json-language-configuration.json"
+    }
+  ]
+}

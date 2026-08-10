@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 3,
+  "id": "dev.foldcode.cpp",
+  "name": "C/C++",
+  "version": "1.0.0+3",
+  "publisher": "FoldCode",
+  "minimumHostVersionCode": 1,
+  "description": "On-device Clang 21 C/C++ compilation, persistent clangd intelligence, LLDB debugging and execution for Android ARM64.",
+  "provides": ["command:clang", "command:clang++", "command:clangd", "command:ld.lld", "toolchain:clang-21", "language-server:cpp", "debug-adapter:lldb"],
+  "legal": {
+    "notices": "licenses/THIRD_PARTY_NOTICES.md",
+    "sources": "licenses/SOURCES.json"
+  },
+  "payloads": {
+    "cpp-runtime-arm64.zip": "__CPP_RUNTIME_SHA256__"
+  }
+}

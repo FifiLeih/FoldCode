@@ -1,0 +1,41 @@
+{
+  "scopeName": "source.cobol",
+  "name": "COBOL",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#numbers" },
+    { "include": "#divisions" },
+    { "include": "#keywords" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        { "name": "comment.line.asterisk.cobol", "match": "(?m)^\\s{0,6}\\*.*$" },
+        { "name": "comment.line.inline.cobol", "match": "\\*>.*$" }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        { "name": "string.quoted.double.cobol", "begin": "\"", "end": "\"" },
+        { "name": "string.quoted.single.cobol", "begin": "'", "end": "'" }
+      ]
+    },
+    "numbers": {
+      "patterns": [{ "name": "constant.numeric.cobol", "match": "\\b[+-]?\\d+(?:\\.\\d+)?\\b" }]
+    },
+    "divisions": {
+      "patterns": [
+        { "name": "entity.name.section.cobol", "match": "(?i)\\b(?:IDENTIFICATION|ENVIRONMENT|DATA|PROCEDURE)\\s+DIVISION\\b" },
+        { "name": "entity.name.section.cobol", "match": "(?i)\\b(?:CONFIGURATION|INPUT-OUTPUT|FILE|WORKING-STORAGE|LOCAL-STORAGE|LINKAGE|REPORT|SCREEN)\\s+SECTION\\b" }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        { "name": "keyword.control.cobol", "match": "(?i)\\b(?:ACCEPT|ADD|CALL|CANCEL|CLOSE|COMPUTE|CONTINUE|DELETE|DISPLAY|DIVIDE|ELSE|END-IF|END-PERFORM|END-READ|END-WRITE|EVALUATE|EXIT|GOBACK|IF|INITIALIZE|INSPECT|MOVE|MULTIPLY|OPEN|PERFORM|READ|RETURN|REWRITE|SEARCH|SET|SORT|START|STOP\\s+RUN|STRING|SUBTRACT|UNSTRING|WHEN|WRITE)\\b" },
+        { "name": "storage.type.cobol", "match": "(?i)\\b(?:PIC|PICTURE|USAGE|COMP|COMP-3|BINARY|DISPLAY|OCCURS|REDEFINES|RENAMES|VALUE)\\b" },
+        { "name": "keyword.declaration.cobol", "match": "(?i)\\b(?:PROGRAM-ID|AUTHOR|DATE-WRITTEN|FILE-CONTROL|SELECT|FD|SD|COPY)\\b" }
+      ]
+    }
+  }
+}

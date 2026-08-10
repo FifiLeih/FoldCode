@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "extensionId": "dev.foldcode.web",
+  "components": [
+    {"name":"Node.js","version":"24.19.0","license":"MIT and bundled component licenses","upstream":"https://github.com/nodejs/node","source":"https://nodejs.org/dist/v24.19.0/"},
+    {"name":"npm CLI","version":"12.0.2 with pinned security dependency replacements","license":"Artistic-2.0","upstream":"https://github.com/npm/cli"},
+    {"name":"TypeScript","version":"5.9.3","license":"Apache-2.0","upstream":"https://github.com/microsoft/TypeScript"},
+    {"name":"typescript-language-server","version":"5.3.0","license":"MIT","upstream":"https://github.com/typescript-language-server/typescript-language-server"},
+    {"name":"vscode-langservers-extracted","version":"4.10.0","license":"MIT","upstream":"https://github.com/hrsh7th/vscode-langservers-extracted"},
+    {"name":"vscode-js-debug","version":"1.117.0","license":"MIT","upstream":"https://github.com/microsoft/vscode-js-debug"}
+  ]
+}

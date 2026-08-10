@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 3,
+  "id": "dev.foldcode.rust",
+  "name": "Rust",
+  "version": "1.0.0+4",
+  "publisher": "FoldCode",
+  "minimumHostVersionCode": 1,
+  "description": "Rust development with rustc, Cargo, rustfmt, offline rust-analyzer intelligence and Raspberry Pi Pico targets on Android ARM64.",
+  "provides": [
+    "command:rustc",
+    "command:cargo",
+    "command:rust-analyzer",
+    "command:rustfmt",
+    "language:rust",
+    "language-server:rust",
+    "source:rust-stdlib",
+    "target:thumbv6m-none-eabi",
+    "target:thumbv8m.main-none-eabihf",
+    "target:riscv32imac-unknown-none-elf"
+  ],
+  "legal": {
+    "notices": "licenses/THIRD_PARTY_NOTICES.md",
+    "sources": "licenses/SOURCES.json"
+  },
+  "payloads": {
+    "rust-runtime-arm64.zip": "__RUST_RUNTIME_SHA256__"
+  }
+}

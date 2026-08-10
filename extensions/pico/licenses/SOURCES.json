@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "extensionId": "dev.foldcode.pico",
+  "components": [
+    {"name":"Raspberry Pi Pico SDK","version":"2.3.0","license":"BSD-3-Clause and bundled dependency licenses","upstream":"https://github.com/raspberrypi/pico-sdk","source":"https://github.com/raspberrypi/pico-sdk/tree/2.3.0"},
+    {"name":"picotool","version":"2.3.0","license":"BSD-3-Clause","upstream":"https://github.com/raspberrypi/picotool","source":"https://github.com/raspberrypi/picotool/tree/2.3.0"},
+    {"name":"MicroPython","version":"1.28","license":"MIT","upstream":"https://github.com/micropython/micropython"},
+    {"name":"Arm GNU Toolchain","version":"15.2.Rel1","license":"GPL-3.0-or-later, GPL runtime exceptions, and bundled component licenses","upstream":"https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads"},
+    {"name":"LLVM RISC-V toolchain","version":"packaged toolchain version","license":"Apache-2.0 WITH LLVM-exception","upstream":"https://github.com/llvm/llvm-project"},
+    {"name":"CMake","version":"packaged runtime version","license":"BSD-3-Clause","upstream":"https://gitlab.kitware.com/cmake/cmake"},
+    {"name":"Ninja","version":"packaged runtime version","license":"Apache-2.0","upstream":"https://github.com/ninja-build/ninja"},
+    {"name":"libusb","version":"packaged runtime version","license":"LGPL-2.1-or-later","upstream":"https://github.com/libusb/libusb"},
+    {"name":"TinyUSB","version":"Pico SDK submodule revision","license":"MIT","upstream":"https://github.com/hathach/tinyusb"},
+    {"name":"lwIP","version":"Pico SDK submodule revision","license":"BSD-3-Clause","upstream":"https://savannah.nongnu.org/projects/lwip/"},
+    {"name":"BTstack","version":"Pico SDK submodule revision","license":"BSD-3-Clause","upstream":"https://github.com/bluekitchen/btstack"},
+    {"name":"CYW43 driver","version":"Pico SDK submodule revision","license":"BSD-3-Clause and Infineon firmware terms","upstream":"https://github.com/georgerobotics/cyw43-driver"}
+  ]
+}

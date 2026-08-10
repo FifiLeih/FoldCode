@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "extensionId": "dev.foldcode.python",
+  "components": [
+    {"name":"CPython","version":"3.14.6","license":"PSF-2.0","upstream":"https://www.python.org/","source":"https://www.python.org/ftp/python/3.14.6/"},
+    {"name":"pip","version":"26.1.2","license":"MIT","upstream":"https://github.com/pypa/pip","source":"Bundled in the verified CPython 3.14.6 Android archive"},
+    {"name":"Jedi","version":"0.20","license":"MIT","upstream":"https://github.com/davidhalter/jedi"},
+    {"name":"Parso","version":"0.8.7","license":"MIT","upstream":"https://github.com/davidhalter/parso"},
+    {"name":"cryptography","version":"50.0.0","license":"Apache-2.0 OR BSD-3-Clause","upstream":"https://github.com/pyca/cryptography","source":"https://files.pythonhosted.org/packages/source/c/cryptography/cryptography-50.0.0.tar.gz","sha256":"eeac2acb5a20ed25e0ad6d1df9891a520b78b404266b6d11778f25d5d691a6c9"},
+    {"name":"cffi","version":"2.1.1","license":"MIT-0","upstream":"https://github.com/python-cffi/cffi","source":"https://files.pythonhosted.org/packages/source/c/cffi/cffi-2.1.1.tar.gz","sha256":"dd31f52ea1086513bb9df30f8fcee9b8918323ae067a3d5b78bc826a000712be"},
+    {"name":"pycparser","version":"3.0","license":"BSD-3-Clause","upstream":"https://github.com/eliben/pycparser","source":"https://files.pythonhosted.org/packages/0c/c3/44f3fbbfa403ea2a7c779186dc20772604442dde72947e7d01069cbe98e3/pycparser-3.0-py3-none-any.whl","sha256":"b727414169a36b7d524c1c3e31839a521725078d7b2ff038656844266160a992"},
+    {"name":"libffi","version":"3.7.1","license":"MIT","upstream":"https://github.com/libffi/libffi","source":"https://github.com/libffi/libffi/releases/download/v3.7.1/libffi-3.7.1.tar.gz","sha256":"d5e9a6638ddbd2513ddb54518eb67e4bbe6fa707bcc01c10f6212f0a088d819d"}
+  ]
+}

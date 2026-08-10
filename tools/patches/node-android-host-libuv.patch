@@ -1,0 +1,75 @@
+--- a/deps/uv/uv.gyp
++++ b/deps/uv/uv.gyp
+@@ -299,6 +299,25 @@
+             'libraries': [ '-ldl' ],
+           },
+         }],
++        [ '_toolset=="host" and host_os=="mac" and OS=="android"', {
++          # Android cross builds still execute node_js2c on the macOS host.
++          # Select Darwin libuv sources for that host-only helper instead of
++          # inheriting the Android/Linux source set from the target OS.
++          'sources!': [
++            '<@(uv_sources_android)',
++          ],
++          'sources': [
++            '<@(uv_sources_apple)',
++            '<@(uv_sources_bsd_common)',
++          ],
++          'defines': [
++            '_DARWIN_USE_64_BIT_INODE=1',
++            '_DARWIN_UNLIMITED_SELECT=1',
++          ],
++          'link_settings': {
++            'libraries!': [ '-ldl' ],
++          },
++        }],
+         [ 'OS=="solaris"', {
+           'sources': [
+             '<@(uv_sources_solaris)',
+--- a/tools/v8_gypfiles/v8.gyp
++++ b/tools/v8_gypfiles/v8.gyp
+@@ -1485,12 +1485,13 @@
+             ],
+           },
+           'target_conditions': [
+-            ['_toolset=="host"', {
++            ['_toolset=="host" and host_os=="linux"', {
+               'sources': [
+                 '<(V8_ROOT)/src/base/debug/stack_trace_posix.cc',
+                 '<(V8_ROOT)/src/base/platform/platform-linux.cc',
+               ],
+-            }, {
++            }],
++            ['_toolset=="target"', {
+               'sources': [
+                 '<(V8_ROOT)/src/base/debug/stack_trace_android.cc',
+                 '<(V8_ROOT)/src/base/platform/platform-linux.cc',
+--- a/tools/gyp/pylib/gyp/generator/make.py
++++ b/tools/gyp/pylib/gyp/generator/make.py
+@@ -225,7 +225,7 @@
+ cmd_alink = rm -f $@ && $(AR.$(TOOLSET)) crs $@ $(filter %.o,$^)
+ 
+ quiet_cmd_alink_thin = AR($(TOOLSET)) $@
+-cmd_alink_thin = rm -f $@ && $(AR.$(TOOLSET)) crsT $@ $(filter %.o,$^)
++cmd_alink_thin = rm -f $@ && $(AR.$(TOOLSET)) crs $@ $(filter %.o,$^)
+ 
+ # Note: this does not handle spaces in paths
+ define xargs
+@@ -249,7 +249,7 @@
+ define create_thin_archive
+         rm -f $(1) $(OBJ_FILE_LIST); mkdir -p `dirname $(1)`
+         $(call write-to-file,$(1).$(OBJ_FILE_LIST),$(filter %.o,$(2)))
+-        $(AR.$(TOOLSET)) crsT $(1) @$(1).$(OBJ_FILE_LIST)
++        $(AR.$(TOOLSET)) crs $(1) @$(1).$(OBJ_FILE_LIST)
+ endef
+ 
+ # Due to circular dependencies between libraries :(, we wrap the
+@@ -258,7 +258,7 @@
+ quiet_cmd_link = LINK($(TOOLSET)) $@
+ quiet_cmd_link_host = LINK($(TOOLSET)) $@
+ cmd_link = $(LINK.$(TOOLSET)) $(GYP_LDFLAGS) $(LDFLAGS.$(TOOLSET)) -o $@ -Wl,--start-group $(LD_INPUTS) -Wl,--end-group $(LIBS)
+-cmd_link_host = $(LINK.$(TOOLSET)) $(GYP_LDFLAGS) $(LDFLAGS.$(TOOLSET)) -o $@ -Wl,--start-group $(LD_INPUTS) -Wl,--end-group $(LIBS)
++cmd_link_host = $(LINK.$(TOOLSET)) $(GYP_LDFLAGS) $(LDFLAGS.$(TOOLSET)) -o $@ $(LD_INPUTS) $(LIBS)
+ 
+ # Other shared-object link notes:
+ # - Set SONAME to the library filename so our binaries don't reference

@@ -1,0 +1,24 @@
+--- a/lldb/tools/lldb-dap/tool/CMakeLists.txt
++++ b/lldb/tools/lldb-dap/tool/CMakeLists.txt
+@@
+ add_lldb_tool(lldb-dap
+   lldb-dap.cpp
+ 
+   LINK_LIBS
+     lldbDAP
+   )
++
++# Android forbids executing downloaded files from app-writable storage. Build
++# an extension-delivered shared DAP core for FoldCode's APK-owned launcher.
++if(FOLDCODE_LLDB_CORE_ENTRY)
++  add_library(foldlldbdapcore SHARED
++    lldb-dap.cpp
++    ${FOLDCODE_LLDB_CORE_ENTRY}
++    )
++  target_compile_definitions(foldlldbdapcore PRIVATE main=foldcode_lldb_dap_main)
++  target_link_libraries(foldlldbdapcore PRIVATE lldbDAP)
++  set_target_properties(foldlldbdapcore PROPERTIES
++    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
++    CXX_VISIBILITY_PRESET hidden
++    VISIBILITY_INLINES_HIDDEN YES)
++endif()

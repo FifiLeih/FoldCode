@@ -1,0 +1,41 @@
+{
+  "scopeName": "source.tsx",
+  "patterns": [
+    { "include": "#jsx" },
+    { "include": "source.ts" }
+  ],
+  "repository": {
+    "jsx": {
+      "patterns": [
+        {
+          "name": "meta.tag.tsx",
+          "begin": "(<)([A-Za-z_$][A-Za-z0-9_.$:-]*)",
+          "beginCaptures": {
+            "1": { "name": "punctuation.definition.tag.begin.tsx" },
+            "2": { "name": "entity.name.tag.tsx" }
+          },
+          "end": "(/?>)",
+          "endCaptures": {
+            "1": { "name": "punctuation.definition.tag.end.tsx" }
+          },
+          "patterns": [
+            { "name": "entity.other.attribute-name.tsx", "match": "[A-Za-z_$][A-Za-z0-9_$:-]*(?=\\s*=|\\s|/?>)" },
+            { "name": "string.quoted.double.tsx", "begin": "\"", "end": "\"" },
+            { "name": "string.quoted.single.tsx", "begin": "'", "end": "'" },
+            { "name": "meta.embedded.expression.tsx", "begin": "\\{", "end": "\\}", "patterns": [{ "include": "source.ts" }] }
+          ]
+        },
+        {
+          "name": "meta.tag.tsx",
+          "match": "(</)([A-Za-z_$][A-Za-z0-9_.$:-]*)(\\s*>)",
+          "captures": {
+            "1": { "name": "punctuation.definition.tag.begin.tsx" },
+            "2": { "name": "entity.name.tag.tsx" },
+            "3": { "name": "punctuation.definition.tag.end.tsx" }
+          }
+        },
+        { "name": "constant.character.entity.tsx", "match": "&[A-Za-z0-9#]+;" }
+      ]
+    }
+  }
+}

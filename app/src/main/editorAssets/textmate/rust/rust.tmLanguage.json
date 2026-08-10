@@ -1,0 +1,107 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "FoldCode Rust",
+  "scopeName": "source.rust",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#attributes" },
+    { "include": "#strings" },
+    { "include": "#numbers" },
+    { "include": "#lifetimes" },
+    { "include": "#keywords" },
+    { "include": "#types" },
+    { "include": "#constants" },
+    { "include": "#macros" },
+    { "include": "#functions" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        { "name": "comment.line.documentation.rust", "match": "///.*$|//!.*$" },
+        { "name": "comment.line.double-slash.rust", "match": "//.*$" },
+        {
+          "name": "comment.block.rust",
+          "begin": "/\\*",
+          "end": "\\*/",
+          "patterns": [{ "include": "#comments" }]
+        }
+      ]
+    },
+    "attributes": {
+      "patterns": [
+        {
+          "name": "meta.attribute.rust",
+          "begin": "#!?\\[",
+          "end": "\\]",
+          "patterns": [
+            { "name": "entity.name.type.attribute.rust", "match": "\\b[A-Za-z_][A-Za-z0-9_]*\\b" },
+            { "include": "#strings" },
+            { "include": "#numbers" }
+          ]
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.rust",
+          "begin": "(?:b|c)?\"",
+          "end": "\"",
+          "patterns": [
+            { "name": "constant.character.escape.rust", "match": "\\\\(?:[nrt0\\\\\"']|x[0-9A-Fa-f]{2}|u\\{[0-9A-Fa-f_]+\\})" },
+            { "name": "constant.other.placeholder.rust", "match": "\\{(?:[^{}]|\\{\\{|\\}\\})*\\}" }
+          ]
+        },
+        { "name": "string.quoted.other.raw.rust", "begin": "(?:br|cr|r)(#+)?\"", "end": "\"\\1" },
+        { "name": "string.quoted.single.rust", "match": "b?'(?:\\\\.|[^'\\\\])'" }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        { "name": "constant.numeric.hex.rust", "match": "\\b0x[0-9A-Fa-f](?:_?[0-9A-Fa-f])*(?:u|i)(?:8|16|32|64|128|size)?\\b|\\b0x[0-9A-Fa-f](?:_?[0-9A-Fa-f])*\\b" },
+        { "name": "constant.numeric.binary.rust", "match": "\\b0b[01](?:_?[01])*(?:(?:u|i)(?:8|16|32|64|128|size))?\\b" },
+        { "name": "constant.numeric.octal.rust", "match": "\\b0o[0-7](?:_?[0-7])*(?:(?:u|i)(?:8|16|32|64|128|size))?\\b" },
+        { "name": "constant.numeric.float.rust", "match": "\\b[0-9](?:_?[0-9])*(?:\\.[0-9](?:_?[0-9])*)?(?:[eE][+-]?[0-9](?:_?[0-9])*)?(?:f32|f64)\\b|\\b[0-9](?:_?[0-9])*\\.[0-9](?:_?[0-9])*(?:[eE][+-]?[0-9]+)?\\b" },
+        { "name": "constant.numeric.decimal.rust", "match": "\\b[0-9](?:_?[0-9])*(?:(?:u|i)(?:8|16|32|64|128|size))?\\b" }
+      ]
+    },
+    "lifetimes": {
+      "patterns": [
+        { "name": "storage.modifier.lifetime.rust", "match": "'[A-Za-z_][A-Za-z0-9_]*" }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        { "name": "keyword.control.rust", "match": "\\b(?:break|continue|else|for|if|loop|match|return|while|yield|async|await|move|try)\\b" },
+        { "name": "keyword.declaration.rust", "match": "\\b(?:const|enum|extern|fn|impl|let|mod|static|struct|trait|type|union|use)\\b" },
+        { "name": "storage.modifier.rust", "match": "\\b(?:crate|dyn|in|mut|pub|ref|unsafe|where|as|self|Self|super)\\b" },
+        { "name": "keyword.operator.rust", "match": "\\b(?:as|box|do|macro|offsetof|override|priv|typeof|unsized|virtual)\\b|=>|->|\\?|\\.\\.|\\.\\.=" }
+      ]
+    },
+    "types": {
+      "patterns": [
+        { "name": "storage.type.rust", "match": "\\b(?:bool|char|str|f32|f64|i8|i16|i32|i64|i128|isize|u8|u16|u32|u64|u128|usize)\\b" },
+        { "name": "support.type.rust", "match": "\\b(?:Box|Cow|Option|Result|String|Vec|HashMap|HashSet|Arc|Rc|Cell|RefCell|Pin|Future|Iterator)\\b" },
+        { "name": "entity.name.type.rust", "match": "\\b[A-Z][A-Za-z0-9_]*\\b" }
+      ]
+    },
+    "constants": {
+      "patterns": [
+        { "name": "constant.language.rust", "match": "\\b(?:true|false|None|Some|Ok|Err)\\b" },
+        { "name": "constant.other.rust", "match": "\\b[A-Z][A-Z0-9_]{2,}\\b" }
+      ]
+    },
+    "macros": {
+      "patterns": [
+        { "name": "entity.name.function.macro.rust", "match": "\\b[A-Za-z_][A-Za-z0-9_]*(?=!)" }
+      ]
+    },
+    "functions": {
+      "patterns": [
+        { "name": "entity.name.function.definition.rust", "match": "(?<=\\bfn\\s)[A-Za-z_][A-Za-z0-9_]*" },
+        { "name": "entity.name.function.call.rust", "match": "\\b[A-Za-z_][A-Za-z0-9_]*(?=\\s*\\()" },
+        { "name": "punctuation.accessor.rust", "match": "::|\\." }
+      ]
+    }
+  }
+}

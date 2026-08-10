@@ -1,0 +1,52 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "FoldCode Python",
+  "scopeName": "source.python",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#numbers" },
+    { "include": "#decorators" },
+    { "include": "#keywords" },
+    { "include": "#constants" },
+    { "include": "#definitions" },
+    { "include": "#builtins" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [{ "name": "comment.line.number-sign.python", "match": "#.*$" }]
+    },
+    "strings": {
+      "patterns": [
+        { "name": "string.quoted.multi.python", "begin": "(?i)(?:[rubf]{0,3})(?:\\\"\\\"\\\"|''')", "end": "(?:\\\"\\\"\\\"|''')", "patterns": [{ "name": "constant.character.escape.python", "match": "\\\\." }] },
+        { "name": "string.quoted.double.python", "begin": "(?i)(?:[rubf]{0,3})\"", "end": "\"", "patterns": [{ "name": "constant.character.escape.python", "match": "\\\\." }] },
+        { "name": "string.quoted.single.python", "begin": "(?i)(?:[rubf]{0,3})'", "end": "'", "patterns": [{ "name": "constant.character.escape.python", "match": "\\\\." }] }
+      ]
+    },
+    "numbers": {
+      "patterns": [{ "name": "constant.numeric.python", "match": "\\b(?:0[xX][0-9A-Fa-f_]+|0[bB][01_]+|0[oO][0-7_]+|(?:[0-9][0-9_]*)(?:\\.[0-9_]*)?(?:[eE][+-]?[0-9_]+)?[jJ]?)\\b" }]
+    },
+    "decorators": {
+      "patterns": [{ "name": "entity.name.function.decorator.python", "match": "(?<=@)[A-Za-z_][A-Za-z0-9_.]*" }]
+    },
+    "keywords": {
+      "patterns": [
+        { "name": "keyword.control.python", "match": "\\b(?:and|as|assert|async|await|break|case|class|continue|def|del|elif|else|except|finally|for|from|global|if|import|in|is|lambda|match|nonlocal|not|or|pass|raise|return|try|while|with|yield)\\b" }
+      ]
+    },
+    "constants": {
+      "patterns": [{ "name": "constant.language.python", "match": "\\b(?:True|False|None|NotImplemented|Ellipsis)\\b" }]
+    },
+    "definitions": {
+      "patterns": [
+        { "name": "entity.name.function.python", "match": "(?<=\\bdef\\s)[A-Za-z_][A-Za-z0-9_]*" },
+        { "name": "entity.name.type.class.python", "match": "(?<=\\bclass\\s)[A-Za-z_][A-Za-z0-9_]*" }
+      ]
+    },
+    "builtins": {
+      "patterns": [
+        { "name": "support.function.builtin.python", "match": "\\b(?:abs|all|any|bool|bytearray|bytes|callable|chr|dict|dir|enumerate|filter|float|format|frozenset|getattr|hasattr|hash|help|hex|id|input|int|isinstance|issubclass|iter|len|list|map|max|memoryview|min|next|object|oct|open|ord|pow|print|property|range|repr|reversed|round|set|setattr|slice|sorted|str|sum|super|tuple|type|vars|zip)\\b" }
+      ]
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "foldcode-web-runtime-tooling",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Reproducible JavaScript tooling bundled by the FoldCode Web Development extension.",
+  "dependencies": {
+    "typescript": "5.9.3",
+    "typescript-language-server": "5.3.0",
+    "vscode-langservers-extracted": "4.10.0"
+  }
+}

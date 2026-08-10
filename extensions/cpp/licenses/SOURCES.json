@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "extensionId": "dev.foldcode.cpp",
+  "components": [
+    {"name":"LLVM Project","version":"21.1.8","license":"Apache-2.0 WITH LLVM-exception","upstream":"https://github.com/llvm/llvm-project","source":"https://github.com/llvm/llvm-project/releases/tag/llvmorg-21.1.8"},
+    {"name":"ICU","version":"packaged runtime version","license":"Unicode-3.0","upstream":"https://github.com/unicode-org/icu"},
+    {"name":"libxml2","version":"packaged runtime version","license":"MIT","upstream":"https://gitlab.gnome.org/GNOME/libxml2"},
+    {"name":"GNU libiconv","version":"packaged runtime version","license":"LGPL-2.1-or-later","upstream":"https://www.gnu.org/software/libiconv/"},
+    {"name":"Zstandard","version":"packaged runtime version","license":"BSD-3-Clause","upstream":"https://github.com/facebook/zstd"},
+    {"name":"libffi","version":"packaged runtime version","license":"MIT","upstream":"https://github.com/libffi/libffi"},
+    {"name":"zlib","version":"packaged runtime version","license":"Zlib","upstream":"https://zlib.net/"}
+  ]
+}

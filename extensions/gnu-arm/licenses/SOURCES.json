@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "extensionId": "dev.foldcode.gnu-arm",
+  "components": [
+    {"name":"Arm GNU Toolchain","version":"15.2.Rel1","license":"GPL-3.0-or-later, GPL runtime exceptions, and bundled component licenses","upstream":"https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads","source":"https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads"},
+    {"name":"GNU C Library host runtime","version":"staged ARM64 runtime version","license":"LGPL-2.1-or-later","upstream":"https://www.gnu.org/software/libc/"}
+  ]
+}

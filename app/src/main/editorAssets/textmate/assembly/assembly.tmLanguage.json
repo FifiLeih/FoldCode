@@ -1,0 +1,54 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "FoldCode ARM and RISC-V Assembly",
+  "scopeName": "source.assembly",
+  "patterns": [
+    { "include": "#preprocessor" },
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#labels" },
+    { "include": "#directives" },
+    { "include": "#registers" },
+    { "include": "#instructions" },
+    { "include": "#numbers" }
+  ],
+  "repository": {
+    "preprocessor": {
+      "match": "^\\s*#\\s*(include|define|undef|if|ifdef|ifndef|elif|else|endif|error|warning|pragma)\\b.*$",
+      "name": "meta.preprocessor.assembly"
+    },
+    "comments": {
+      "patterns": [
+        { "match": "//.*$", "name": "comment.line.double-slash.assembly" },
+        { "match": "(?<!\\S)[;@#].*$", "name": "comment.line.assembly" },
+        { "begin": "/\\*", "end": "\\*/", "name": "comment.block.assembly" }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        { "begin": "\"", "end": "\"", "name": "string.quoted.double.assembly" },
+        { "begin": "'", "end": "'", "name": "string.quoted.single.assembly" }
+      ]
+    },
+    "labels": {
+      "match": "^\\s*([A-Za-z_.$][A-Za-z0-9_.$]*):",
+      "captures": { "1": { "name": "entity.name.function.label.assembly" } }
+    },
+    "directives": {
+      "match": "(?i)(?<![A-Za-z0-9_])\\.(section|text|data|bss|global|globl|type|size|align|balign|p2align|word|long|short|byte|quad|ascii|asciz|string|space|zero|equ|set|macro|endm|syntax|thumb|thumb_func|cpu|arch|fpu|option|attribute|include|incbin)(?![A-Za-z0-9_])",
+      "name": "keyword.control.directive.assembly"
+    },
+    "registers": {
+      "match": "(?i)\\b(?:r(?:1[0-5]|[0-9])|sp|lr|pc|x(?:[12]?[0-9]|3[01])|zero|ra|gp|tp|t[0-6]|s(?:1[01]|[0-9])|a[0-7]|mstatus|mtvec|mepc|mcause)\\b",
+      "name": "variable.language.register.assembly"
+    },
+    "instructions": {
+      "match": "(?i)\\b(?:mov|movs|mvn|add|adds|adc|sub|subs|sbc|mul|mla|udiv|sdiv|and|ands|orr|eor|bic|lsl|lsr|asr|ror|cmp|cmn|tst|ldr|ldrb|ldrh|ldrsb|ldrsh|str|strb|strh|push|pop|b|bl|blx|bx|beq|bne|bcs|bcc|bmi|bpl|bvs|bvc|bhi|bls|bge|blt|bgt|ble|cbz|cbnz|nop|wfi|wfe|sev|dmb|dsb|isb|svc|bkpt|li|la|mv|neg|not|sext\\.w|zext\\.w|addi|slti|sltiu|xori|ori|andi|slli|srli|srai|lui|auipc|addw|subw|sll|slt|sltu|xor|srl|sra|or|lb|lh|lw|lbu|lhu|sb|sh|sw|jal|jalr|ret|call|tail|ecall|ebreak|csrrw|csrrs|csrrc|csrr|csrw|fence)\\b",
+      "name": "keyword.control.instruction.assembly"
+    },
+    "numbers": {
+      "match": "(?i)(?<![A-Za-z0-9_])(?:0x[0-9a-f]+|0b[01]+|[0-9]+)(?![A-Za-z0-9_])",
+      "name": "constant.numeric.assembly"
+    }
+  }
+}

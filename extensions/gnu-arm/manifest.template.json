@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 3,
+  "id": "dev.foldcode.gnu-arm",
+  "name": "GNU Arm Embedded",
+  "version": "15.2.1+1",
+  "publisher": "FoldCode",
+  "minimumHostVersionCode": 1,
+  "description": "Official GNU Arm Embedded GCC for projects that require GCC-specific behavior and plugins.",
+  "provides": ["command:arm-none-eabi-gcc", "command:arm-none-eabi-g++", "toolchain:gnu-arm-none-eabi"],
+  "legal": {
+    "notices": "licenses/THIRD_PARTY_NOTICES.md",
+    "sources": "licenses/SOURCES.json"
+  },
+  "payloads": {
+    "gnu-arm-runtime.zip": "__GNU_ARM_RUNTIME_SHA256__"
+  }
+}

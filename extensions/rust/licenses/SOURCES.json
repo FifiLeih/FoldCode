@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "extensionId": "dev.foldcode.rust",
+  "components": [
+    {"name":"Rust compiler and standard library","version":"stable channel resolved at package build time","license":"Apache-2.0 OR MIT","upstream":"https://github.com/rust-lang/rust","source":"https://static.rust-lang.org/dist/channel-rust-stable.toml"},
+    {"name":"Cargo","version":"stable channel resolved at package build time","license":"Apache-2.0 OR MIT","upstream":"https://github.com/rust-lang/cargo"},
+    {"name":"rust-analyzer","version":"stable channel resolved at package build time","license":"Apache-2.0 OR MIT","upstream":"https://github.com/rust-lang/rust-analyzer"},
+    {"name":"rustfmt","version":"stable channel resolved at package build time","license":"Apache-2.0 OR MIT","upstream":"https://github.com/rust-lang/rustfmt"},
+    {"name":"GNU C Library","version":"2.41-12+deb13u4","license":"LGPL-2.1-or-later","upstream":"https://www.gnu.org/software/libc/","source":"https://deb.debian.org/debian/pool/main/g/glibc/"},
+    {"name":"GCC runtime library","version":"14.2.0-19","license":"GPL-3.0-or-later WITH GCC-exception-3.1","upstream":"https://gcc.gnu.org/","source":"https://deb.debian.org/debian/pool/main/g/gcc-14/"},
+    {"name":"zlib","version":"1.3.1-1+b1","license":"Zlib","upstream":"https://zlib.net/","source":"https://deb.debian.org/debian/pool/main/z/zlib/"},
+    {"name":"Mozilla CA certificate bundle","version":"bundle pinned by SHA-256 at package build time","license":"MPL-2.0","upstream":"https://curl.se/docs/caextract.html"}
+  ]
+}

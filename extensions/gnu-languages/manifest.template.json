@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 3,
+  "id": "dev.foldcode.gnu-languages",
+  "name": "Fortran & COBOL",
+  "version": "1.0.0+6",
+  "publisher": "FoldCode",
+  "minimumHostVersionCode": 1,
+  "description": "GNU Fortran and GnuCOBOL compilation, project-aware completion, diagnostics and console execution on Android ARM64.",
+  "provides": [
+    "command:gfortran",
+    "command:cobc",
+    "command:cobcrun",
+    "language:fortran",
+    "language:cobol",
+    "intelligence:fortran",
+    "intelligence:cobol",
+    "runtime:gnu-linux-arm64"
+  ],
+  "legal": {
+    "notices": "licenses/THIRD_PARTY_NOTICES.md",
+    "sources": "licenses/SOURCES.json"
+  },
+  "payloads": {
+    "gnu-languages-runtime-arm64.zip": "__GNU_RUNTIME_SHA256__"
+  }
+}

@@ -1,0 +1,205 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index d659f5e..f1a3b10 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -51,7 +51,7 @@ include(ExternalProject)
+ if (MSVC)
+     set(CMAKE_CXX_STANDARD 20)
+ else()
+-    set(CMAKE_CXX_STANDARD 14)
++    set(CMAKE_CXX_STANDARD 17)
+ endif()
+ 
+ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
+diff --git a/main.cpp b/main.cpp
+index 0c3b093..d58508d 100644
+--- a/main.cpp
++++ b/main.cpp
+@@ -59,6 +59,11 @@
+ 
+ #if defined(__unix__) || defined(__APPLE__)
+ #include <unistd.h>
++#include <fcntl.h>
++#if defined(__ANDROID__)
++#include <sys/socket.h>
++#include <sys/un.h>
++#endif
+ #endif
+ 
+ // missing __builtins on windows
+@@ -117,6 +122,49 @@ using json = nlohmann::json;
+ 
+ #if HAS_LIBUSB
+ typedef map<enum picoboot_device_result,vector<tuple<chip_t, libusb_device *, libusb_device_handle *>>> device_map;
++
++#if defined(__ANDROID__)
++static int receive_android_usb_fd(const char *socket_name) {
++    if (!socket_name || !*socket_name) return -1;
++    const size_t name_length = strlen(socket_name);
++    if (name_length >= sizeof(sockaddr_un::sun_path) - 1) return -1;
++
++    const int socket_fd = socket(AF_UNIX, SOCK_STREAM | SOCK_CLOEXEC, 0);
++    if (socket_fd < 0) return -1;
++
++    sockaddr_un address{};
++    address.sun_family = AF_UNIX;
++    memcpy(address.sun_path + 1, socket_name, name_length);
++    const socklen_t address_length = static_cast<socklen_t>(
++            offsetof(sockaddr_un, sun_path) + 1 + name_length);
++    if (connect(socket_fd, reinterpret_cast<sockaddr *>(&address), address_length) < 0) {
++        close(socket_fd);
++        return -1;
++    }
++
++    char payload = 0;
++    iovec io{&payload, sizeof(payload)};
++    alignas(cmsghdr) char control[CMSG_SPACE(sizeof(int))]{};
++    msghdr message{};
++    message.msg_iov = &io;
++    message.msg_iovlen = 1;
++    message.msg_control = control;
++    message.msg_controllen = sizeof(control);
++    const ssize_t received = recvmsg(socket_fd, &message, 0);
++    int received_fd = -1;
++    if (received > 0) {
++        for (cmsghdr *header = CMSG_FIRSTHDR(&message); header; header = CMSG_NXTHDR(&message, header)) {
++            if (header->cmsg_level == SOL_SOCKET && header->cmsg_type == SCM_RIGHTS &&
++                    header->cmsg_len >= CMSG_LEN(sizeof(int))) {
++                memcpy(&received_fd, CMSG_DATA(header), sizeof(received_fd));
++                break;
++            }
++        }
++    }
++    close(socket_fd);
++    return received_fd;
++}
++#endif
+ #else
+ typedef map<enum picoboot_device_result,vector<tuple<chip_t, void *, void *>>> device_map;
+ #endif
+@@ -10173,9 +10221,29 @@ int main(int argc, char **argv) {
+         fos.last_column(std::max(tw, 40));
+     }
+ 
++#if HAS_LIBUSB
++    const char *android_usb_socket = getenv("FOLDCODE_USB_SOCKET");
++    int android_fd = -1;
++#if defined(__ANDROID__)
++    // Complete Android's descriptor handoff before argument parsing. Help and
++    // invalid commands can return from parse() without touching libusb.
++    if (android_usb_socket && *android_usb_socket) {
++        android_fd = receive_android_usb_fd(android_usb_socket);
++    }
++#endif
++#endif
++
+     int rc = parse(argc, argv);
+-    if (rc) return rc;
++    if (rc) {
++#if HAS_LIBUSB && defined(__ANDROID__)
++        if (android_fd >= 0) close(android_fd);
++#endif
++        return rc;
++    }
+     if (!selected_cmd) {
++#if HAS_LIBUSB && defined(__ANDROID__)
++        if (android_fd >= 0) close(android_fd);
++#endif
+         return 0;
+     }
+ 
+@@ -10185,6 +10253,7 @@ int main(int argc, char **argv) {
+ 
+ #if HAS_LIBUSB
+     libusb_context *ctx = nullptr;
++    libusb_device_handle *android_handle = nullptr;
+ 
+     // save complicating the grammar
+     if (settings.force_no_reboot) settings.force = true;
+@@ -10202,18 +10271,40 @@ int main(int argc, char **argv) {
+         }
+ 
+         if (selected_cmd->get_device_support() != cmd::none) {
++#if defined(__ANDROID__)
++            // Unrooted Android applications cannot enumerate usbfs. Devices are
++            // supplied through UsbManager and libusb_wrap_sys_device instead.
++            libusb_set_option(nullptr, LIBUSB_OPTION_NO_DEVICE_DISCOVERY);
++            if (android_usb_socket && *android_usb_socket && android_fd < 0) {
++                fail(ERROR_USB, "Could not receive Android-authorized USB descriptor\n");
++            }
++#endif
+             if (libusb_init(&ctx)) {
+                 fail(ERROR_USB, "Failed to initialise libUSB\n");
+             }
++            if (android_fd >= 0 && libusb_wrap_sys_device(ctx, (intptr_t)android_fd, &android_handle)) {
++                close(android_fd);
++                android_fd = -1;
++                fail(ERROR_USB, "Failed to wrap Android-authorized USB descriptor\n");
++            }
+         }
+ 
+         // we only loop a second time if we want to reboot some devices (which may cause device
+         for (int tries = 0; !rc && tries <= MAX_REBOOT_TRIES; tries++) {
+             if (ctx) {
+-                if (libusb_get_device_list(ctx, &devs) < 0) {
+-                    fail(ERROR_USB, "Failed to enumerate USB devices\n");
+-                }
+-                for (libusb_device **dev = devs; *dev; dev++) {
++                if (android_handle) {
++                    libusb_device *dev = libusb_get_device(android_handle);
++                    libusb_device_handle *handle = android_handle;
++                    chip_t chip = unknown;
++                    auto result = picoboot_open_device(dev, &handle, &chip, settings.vid, settings.pid, settings.ser.c_str());
++                    if (handle) to_close.push_back(handle);
++                    if (result != dr_error) devices[result].emplace_back(std::make_tuple(chip, dev, handle));
++                    android_handle = nullptr;
++                } else {
++                    if (libusb_get_device_list(ctx, &devs) < 0) {
++                        fail(ERROR_USB, "Failed to enumerate USB devices\n");
++                    }
++                    for (libusb_device **dev = devs; *dev; dev++) {
+                     if (settings.bus != -1 && settings.bus != libusb_get_bus_number(*dev)) continue;
+                     if (settings.address != -1 && settings.address != libusb_get_device_address(*dev)) continue;
+                     libusb_device_handle *handle = nullptr;
+@@ -10233,6 +10324,7 @@ int main(int argc, char **argv) {
+                         DEBUG_LOG("Found bootrom device with serial number, so stopping search");
+                         break;
+                     }
++                    }
+                 }
+             }
+             auto supported = selected_cmd->get_device_support();
+@@ -10428,6 +10520,7 @@ int main(int argc, char **argv) {
+     }
+     if (devs) libusb_free_device_list(devs, 1);
+     if (ctx) libusb_exit(ctx);
++    if (android_fd >= 0) close(android_fd);
+ 
+ #else
+     device_map devices;
+diff --git a/picoboot_connection/picoboot_connection.c b/picoboot_connection/picoboot_connection.c
+index 60370c3..b978548 100644
+--- a/picoboot_connection/picoboot_connection.c
++++ b/picoboot_connection/picoboot_connection.c
+@@ -64,7 +64,11 @@ enum picoboot_device_result picoboot_open_device(libusb_device *device, libusb_d
+     struct libusb_config_descriptor *config;
+ 
+     definitely_exclusive = false;
+-    *dev_handle = NULL;
++    // FoldCode opens USB through Android's UsbManager and wraps that authorized
++    // descriptor with libusb. Preserve a supplied handle instead of trying to
++    // open /dev/bus/usb again, which unprivileged Android applications cannot do.
++    bool preopened = *dev_handle != NULL;
++    if (!preopened) *dev_handle = NULL;
+     *chip = unknown;
+     int ret = libusb_get_device_descriptor(device, &desc);
+     enum picoboot_device_result res = dr_vidpid_unknown;
+@@ -111,7 +115,7 @@ enum picoboot_device_result picoboot_open_device(libusb_device *device, libusb_d
+         }
+     }
+ 
+-    if (!ret) {
++    if (!ret && !preopened) {
+         ret  = libusb_open(device, dev_handle);
+         if (ret && verbose) {
+             output("Failed to open device %s\n", libusb_error_name(ret));

@@ -1,0 +1,70 @@
+# macOS and IDE-local state
+.DS_Store
+**/.DS_Store
+.idea/
+.kotlin/
+*.iml
+
+# Machine-local Android/Gradle configuration
+.gradle/
+local.properties
+
+# Gradle, CMake, Ninja, and native build output
+/build/
+/app/build/
+**/.cxx/
+**/.externalNativeBuild/
+.cmake/
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+compile_commands.json
+.ninja_deps
+.ninja_log
+build.ninja
+
+# Reproducible release and extension output
+artifacts/
+dist/
+release/
+server/
+/.reconstruction/
+/.git-pre-reconstruction-*/
+/REPOSITORY_RECONSTRUCTION.md
+/ROADMAP.md
+extensions/*/payload/
+app/src/main/assets/toolchain.zip
+**/__pycache__/
+*.py[cod]
+
+# Native runtime inputs are built separately and published as release or
+# extension assets. The source repository keeps only their build scripts.
+app/src/main/jniLibs/**/*.so
+
+# Packaged outputs and downloaded archives
+*.apk
+*.aab
+*.apks
+*.fcex
+*.tar
+*.tar.gz
+*.tar.xz
+*.tar.zst
+
+# Logs, profiles, and crash output
+*.log
+*.hprof
+*.profraw
+*.profdata
+
+# Signing material and local service credentials
+.env
+.env.*
+*.jks
+*.keystore
+*.p12
+*.pfx
+*.key
+*.pem
+!app/src/main/assets/git/cacert.pem
+keystore.properties
