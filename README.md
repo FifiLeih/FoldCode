@@ -169,55 +169,11 @@ execution directly from writable extension storage.
 The Android source ownership map is documented in
 [`app/src/main/java/dev/foldcode/ide/ARCHITECTURE.md`](app/src/main/java/dev/foldcode/ide/ARCHITECTURE.md).
 
-## Automated checks
+## Contributing
 
-Run the complete non-UI release suite before manual device testing:
-
-```bash
-FOLDCODE_NETWORK_AUDIT=1 tools/test-core.sh
-```
-
-It runs repository and legal checks, JVM tests, Android lint for debug and release,
-both APK builds, release APK inspection, npm advisory checks, and validation of all
-seven approved extension packages when present. A source-only checkout without the
-base-native contributor bundle can use `tools/test-core.sh --quick`.
-
-The host Pico SDK compilation matrix needs five external tool paths. Export
-`PICO_TEST_SDK`, `PICO_TEST_TOOLCHAIN`, `PICO_TEST_CMAKE`, `PICO_TEST_NINJA`, and
-`PICO_TEST_PICOTOOL`, then run:
-
-```bash
-tools/test-core.sh --require-pico
-```
-
-The source-only suite also runs for GitHub pushes and pull requests through
-`.github/workflows/core-checks.yml`. Third-party workflow actions are pinned to reviewed
-immutable commits.
-
-## Production release
-
-Release credentials must remain outside the repository. Configure all four variables,
-then use the signing-enforced task:
-
-```bash
-export FOLDCODE_RELEASE_STORE_FILE=/secure/path/foldcode-release.jks
-export FOLDCODE_RELEASE_STORE_PASSWORD='...'
-export FOLDCODE_RELEASE_KEY_ALIAS='...'
-export FOLDCODE_RELEASE_KEY_PASSWORD='...'
-./gradlew publicRelease
-```
-
-After building the seven extensions and contributor runtime bundle, stage only the
-approved assets and generate `SHA256SUMS` with:
-
-```bash
-tools/prepare-github-release.sh /path/to/signed-release.apk
-```
-
-Historical packages under ignored `artifacts/` directories are development output and
-must not be uploaded. Do not publish a debug or unsigned APK, local configuration,
-signing material, server data, or obsolete extension revisions. Follow
-[`RELEASE_CHECKLIST.md`](RELEASE_CHECKLIST.md) for the complete release procedure.
+Development setup, automated checks, CI behavior, and the optional Pico SDK compilation
+matrix are documented in [CONTRIBUTING.md](CONTRIBUTING.md). Maintainers preparing a
+signed public build should follow [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md).
 
 ## License
 

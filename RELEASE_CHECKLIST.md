@@ -34,6 +34,23 @@
 - Uninstall any debug-signed build, install the exact staged production APK on a clean
   ARM64 device, and confirm the expected signer remains unchanged for future updates.
 
+Use the signing-enforced release task with credentials stored outside the repository:
+
+```bash
+export FOLDCODE_RELEASE_STORE_FILE=/secure/path/foldcode-release.jks
+export FOLDCODE_RELEASE_STORE_PASSWORD='...'
+export FOLDCODE_RELEASE_KEY_ALIAS='...'
+export FOLDCODE_RELEASE_KEY_PASSWORD='...'
+./gradlew publicRelease
+```
+
+After building the seven extensions and contributor runtime bundle, stage only the
+approved assets and generate `SHA256SUMS` with:
+
+```bash
+tools/prepare-github-release.sh /path/to/signed-release.apk
+```
+
 ## Manual acceptance test
 
 - Start from a fresh installation, grant All files access, and confirm
