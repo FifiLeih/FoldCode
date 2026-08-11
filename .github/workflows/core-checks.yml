@@ -30,8 +30,30 @@ jobs:
       - name: Install Android SDK components
         shell: bash
         run: |
-          yes | sdkmanager --licenses >/dev/null 2>&1 || true
-          sdkmanager \
+          foldcode_sdk_root="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-}}"
+          if [[ -z "$foldcode_sdk_root" || ! -d "$foldcode_sdk_root/cmdline-tools" ]]; then
+            echo "Android SDK command-line tools are unavailable" >&2
+            exit 1
+          fi
+
+          foldcode_sdkmanager="$foldcode_sdk_root/cmdline-tools/latest/bin/sdkmanager"
+          if [[ ! -x "$foldcode_sdkmanager" ]]; then
+            foldcode_sdkmanager=$(find "$foldcode_sdk_root/cmdline-tools" \
+              -type f -path '*/bin/sdkmanager' -perm -111 -print | sort -V | tail -n 1)
+          fi
+          if [[ -z "$foldcode_sdkmanager" || ! -x "$foldcode_sdkmanager" ]]; then
+            echo "Could not locate sdkmanager below $foldcode_sdk_root/cmdline-tools" >&2
+            exit 1
+          fi
+
+          # GitHub's bash enables pipefail. sdkmanager closes stdin after the
+          # final accepted license, which makes `yes` exit through SIGPIPE even
+          # though license acceptance succeeded.
+          set +o pipefail
+          yes | "$foldcode_sdkmanager" --licenses >/dev/null
+          set -o pipefail
+
+          "$foldcode_sdkmanager" \
             "platforms;android-36" \
             "build-tools;36.0.0" \
             "ndk;27.2.12479018" \
