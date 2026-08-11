@@ -36,6 +36,72 @@ same device-specific coverage.
 - Raspberry Pi Pico configuration, incremental CMake/Ninja builds, MicroPython support,
   UF2 generation, and USB flashing
 
+## FoldCode in action
+
+These screenshots were captured from working projects on a Galaxy Z Fold 5 in folded,
+unfolded, and Samsung DeX layouts. Select any image to open it at full resolution.
+
+### General C++, Rust, and Python projects
+
+<table>
+  <tr>
+    <td><a href="docs/screenshots/general-cpp-phone-editor.jpg"><img src="docs/screenshots/general-cpp-phone-editor.jpg" alt="C++ project building and running on a folded phone" width="220"></a></td>
+    <td><a href="docs/screenshots/general-cpp-phone-explorer.jpg"><img src="docs/screenshots/general-cpp-phone-explorer.jpg" alt="C++ multi-file project explorer on a folded phone" width="220"></a></td>
+    <td><a href="docs/screenshots/general-rust-phone.jpg"><img src="docs/screenshots/general-rust-phone.jpg" alt="Rust Cargo project building and running on a folded phone" width="220"></a></td>
+    <td><a href="docs/screenshots/general-python-phone.jpg"><img src="docs/screenshots/general-python-phone.jpg" alt="Python project checking and running on a folded phone" width="220"></a></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>C++ build and execution</sub></td>
+    <td align="center"><sub>C++ project explorer</sub></td>
+    <td align="center"><sub>Rust with Cargo</sub></td>
+    <td align="center"><sub>Python check and execution</sub></td>
+  </tr>
+</table>
+
+### Web development
+
+<p align="center">
+  <a href="docs/screenshots/web-react-dex.jpg"><img src="docs/screenshots/web-react-dex.jpg" alt="React and Vite project with live WebView preview and browser console on Samsung DeX" width="900"></a><br>
+  <sub>React and Vite on Samsung DeX with live preview, hot reload, and browser console</sub>
+</p>
+
+<table>
+  <tr>
+    <td><a href="docs/screenshots/web-vanilla-javascript-phone.jpg"><img src="docs/screenshots/web-vanilla-javascript-phone.jpg" alt="Vanilla JavaScript local preview on a folded phone" width="300"></a></td>
+    <td><a href="docs/screenshots/web-react-phone.jpg"><img src="docs/screenshots/web-react-phone.jpg" alt="React and Vite local preview on a folded phone" width="300"></a></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Vanilla JavaScript local server</sub></td>
+    <td align="center"><sub>React and Vite preview</sub></td>
+  </tr>
+</table>
+
+### Raspberry Pi Pico development
+
+<p align="center">
+  <a href="docs/screenshots/pico-build-dex.jpg"><img src="docs/screenshots/pico-build-dex.jpg" alt="Raspberry Pi Pico RP2350 C++ project building successfully on Samsung DeX" width="900"></a><br>
+  <sub>RP2350 C++ project and successful UF2 build on Samsung DeX</sub>
+</p>
+
+<table>
+  <tr>
+    <td><a href="docs/screenshots/pico-tools-phone.jpg"><img src="docs/screenshots/pico-tools-phone.jpg" alt="Raspberry Pi Pico project tools and build configuration on a folded phone" width="300"></a></td>
+    <td><a href="docs/screenshots/pico-build-phone.jpg"><img src="docs/screenshots/pico-build-phone.jpg" alt="Raspberry Pi Pico C++ project producing a UF2 file on a folded phone" width="300"></a></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Pico tools, boards, and documentation</sub></td>
+    <td align="center"><sub>Phone editor and UF2 build output</sub></td>
+  </tr>
+  <tr>
+    <td><a href="docs/screenshots/pico-build-unfolded.jpg"><img src="docs/screenshots/pico-build-unfolded.jpg" alt="Raspberry Pi Pico project explorer, editor, and build output in the unfolded layout" width="500"></a></td>
+    <td><a href="docs/screenshots/pico-picotool-unfolded.jpg"><img src="docs/screenshots/pico-picotool-unfolded.jpg" alt="picotool running in the terminal in the unfolded layout" width="500"></a></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Unfolded project and build workspace</sub></td>
+    <td align="center"><sub>Bundled picotool in the terminal</sub></td>
+  </tr>
+</table>
+
 ## Extensions
 
 The base APK is the editor and workspace host. Install only the language packages you

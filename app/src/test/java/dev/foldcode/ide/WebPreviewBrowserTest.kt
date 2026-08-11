@@ -39,4 +39,26 @@ class WebPreviewBrowserTest {
         assertFalse(isCurrentWebNavigation(activePage, "http://127.0.0.1:3000"))
         assertTrue(isCurrentWebNavigation(activePage, activePage))
     }
+
+    @Test
+    fun webViewUrlNormalizationKeepsCallbacksAttachedToTheirNavigation() {
+        assertTrue(
+            isCurrentWebNavigation(
+                "http://127.0.0.1:3000",
+                "http://127.0.0.1:3000/",
+            ),
+        )
+        assertTrue(
+            isCurrentWebNavigation(
+                "https://EXAMPLE.com:443/app#editor",
+                "https://example.com/app",
+            ),
+        )
+        assertFalse(
+            isCurrentWebNavigation(
+                "http://127.0.0.1:3000/app",
+                "http://127.0.0.1:3000/other",
+            ),
+        )
+    }
 }

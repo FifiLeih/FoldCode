@@ -57,6 +57,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import java.net.URI
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
+import kotlinx.coroutines.delay
 
 /** DeX browser surface that also becomes the local preview for a running web project. */
 @SuppressLint("SetJavaScriptEnabled")
@@ -83,6 +84,26 @@ internal fun WebPreviewBrowser(url: String, mode: LayoutMode, modifier: Modifier
     val density = LocalDensity.current
     val focusManager = LocalFocusManager.current
 
+    fun appendConsoleMessage(
+        level: String,
+        message: String?,
+        sourceId: String?,
+        lineNumber: Int,
+    ) {
+        val text = message?.takeIf(String::isNotBlank) ?: return
+        val source = sourceId
+            ?.substringAfterLast('/')
+            ?.takeIf(String::isNotBlank)
+            ?.let { name -> if (lineNumber > 0) "$name:$lineNumber" else name }
+        val entry = buildString {
+            append(level)
+            append(" · ")
+            append(text)
+            source?.let { append(" (").append(it).append(')') }
+        }
+        console = (console + entry).takeLast(100)
+    }
+
     fun navigateToAddress() {
         val destination = browserAddressToUrl(address) ?: return
         address = destination
@@ -105,6 +126,34 @@ internal fun WebPreviewBrowser(url: String, mode: LayoutMode, modifier: Modifier
 
     LaunchedEffect(console.size, consoleHeightDp) {
         consoleVerticalScroll.scrollTo(consoleVerticalScroll.maxValue)
+    }
+    LaunchedEffect(console.size) {
+        // A previous long message can leave the horizontal viewport at its
+        // far end, making new short console entries appear completely blank.
+        consoleHorizontalScroll.scrollTo(0)
+    }
+
+    // A Vite configuration change briefly stops its HTTP server while the
+    // replacement process starts. If WebView happens to reload in that gap,
+    // there is no document left to host Vite's reconnecting HMR client. Retry
+    // localhost navigations until the replacement page commits, while leaving
+    // ordinary internet navigation alone.
+    LaunchedEffect(status, address, webView) {
+        if (!isLocalWebAddress(address)) return@LaunchedEffect
+        when (status) {
+            "SERVER OFFLINE" -> delay(750L)
+            "CONNECTING" -> delay(4_000L)
+            else -> return@LaunchedEffect
+        }
+        while (isLocalWebAddress(address) && status != "READY") {
+            val retryView = webView ?: return@LaunchedEffect
+            pageVisible = true
+            retryView.visibility = View.VISIBLE
+            status = "CONNECTING"
+            retryView.stopLoading()
+            retryView.loadUrl(address)
+            delay(4_000L)
+        }
     }
 
     BoxWithConstraints(modifier.background(Background)) {
@@ -181,13 +230,25 @@ internal fun WebPreviewBrowser(url: String, mode: LayoutMode, modifier: Modifier
                         settings.cacheMode = WebSettings.LOAD_NO_CACHE
                         settings.allowFileAccess = false
                         settings.allowContentAccess = false
-                        webViewClient = object : WebViewClient() {
-                            private var mainFrameFailed = false
-                            private var activeMainFrameUrl: String? = null
+                        var mainFrameFailed = false
+                        var activeMainFrameUrl: String? = null
+                        var navigationReportedReady = false
 
+                        fun reportMainFrameReady(view: WebView, callbackUrl: String?) {
+                            val currentUrl = callbackUrl ?: return
+                            if (!isCurrentWebNavigation(activeMainFrameUrl, currentUrl)) return
+                            if (mainFrameFailed) return
+                            navigationReportedReady = true
+                            status = "READY"
+                            pageVisible = true
+                            view.visibility = View.VISIBLE
+                        }
+
+                        webViewClient = object : WebViewClient() {
                             override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
                                 activeMainFrameUrl = url
                                 mainFrameFailed = false
+                                navigationReportedReady = false
                                 address = url
                                 status = "CONNECTING"
                                 // A previous localhost failure may have hidden the
@@ -198,20 +259,27 @@ internal fun WebPreviewBrowser(url: String, mode: LayoutMode, modifier: Modifier
                             }
 
                             override fun onPageCommitVisible(view: WebView, url: String) {
-                                if (!isCurrentWebNavigation(activeMainFrameUrl, url)) return
-                                pageVisible = true
-                                view.visibility = View.VISIBLE
+                                // Hot-reload pages can keep network activity alive and
+                                // delay (or omit) onPageFinished. A committed main frame
+                                // is already safe to display and should be reported ready.
+                                reportMainFrameReady(view, url)
+                            }
+
+                            override fun onLoadResource(view: WebView, url: String) {
+                                // Some Samsung WebView builds do not dispatch
+                                // onPageCommitVisible for an embedded side pane. Once
+                                // its current document starts loading resources, the
+                                // preview is alive even if onPageFinished stays pending.
+                                if (!navigationReportedReady) {
+                                    reportMainFrameReady(view, view.url ?: activeMainFrameUrl)
+                                }
                             }
 
                             override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean =
                                 !isBrowsableWebUri(request.url)
 
                             override fun onPageFinished(view: WebView, url: String) {
-                                if (!isCurrentWebNavigation(activeMainFrameUrl, url)) return
-                                if (mainFrameFailed) return
-                                status = "READY"
-                                pageVisible = true
-                                view.visibility = View.VISIBLE
+                                reportMainFrameReady(view, url)
                             }
 
                             override fun onReceivedError(
@@ -231,10 +299,33 @@ internal fun WebPreviewBrowser(url: String, mode: LayoutMode, modifier: Modifier
                             }
                         }
                         webChromeClient = object : WebChromeClient() {
+                            override fun onProgressChanged(view: WebView, newProgress: Int) {
+                                // Resource callbacks are the primary fallback. Progress
+                                // also covers single-file pages with no subresources.
+                                if (newProgress >= 50 && !navigationReportedReady) {
+                                    reportMainFrameReady(view, view.url ?: activeMainFrameUrl)
+                                }
+                            }
+
                             override fun onConsoleMessage(message: ConsoleMessage): Boolean {
-                                val entry = "${message.messageLevel()} · ${message.message()} (${message.sourceId().substringAfterLast('/')}:${message.lineNumber()})"
-                                console = (console + entry).takeLast(100)
+                                appendConsoleMessage(
+                                    level = message.messageLevel().toString(),
+                                    message = message.message(),
+                                    sourceId = message.sourceId(),
+                                    lineNumber = message.lineNumber(),
+                                )
                                 return true
+                            }
+
+                            @Suppress("OVERRIDE_DEPRECATION")
+                            override fun onConsoleMessage(
+                                message: String?,
+                                lineNumber: Int,
+                                sourceID: String?,
+                            ) {
+                                // Kept for Samsung WebView versions which still invoke
+                                // the legacy callback for console.debug/console.log.
+                                appendConsoleMessage("LOG", message, sourceID, lineNumber)
                             }
                         }
                         webView = this
@@ -324,7 +415,34 @@ internal fun WebPreviewBrowser(url: String, mode: LayoutMode, modifier: Modifier
 private fun isBrowsableWebUri(uri: Uri): Boolean = uri.scheme?.lowercase() in setOf("http", "https")
 
 internal fun isCurrentWebNavigation(activeUrl: String?, callbackUrl: String): Boolean =
-    activeUrl != null && activeUrl == callbackUrl
+    activeUrl != null && (
+        canonicalWebNavigationUrl(activeUrl)?.let { active ->
+            canonicalWebNavigationUrl(callbackUrl)?.let(active::equals)
+        } ?: (activeUrl == callbackUrl)
+    )
+
+/**
+ * WebView may add the root slash or remove an explicit default port between
+ * callbacks for the same navigation. Compare the stable HTTP address rather
+ * than the callback strings so a valid commit/error is not treated as stale.
+ */
+private fun canonicalWebNavigationUrl(value: String): String? = runCatching {
+    val uri = URI(value).normalize()
+    val scheme = uri.scheme?.lowercase() ?: return@runCatching null
+    if (scheme !in setOf("http", "https")) return@runCatching null
+    val host = uri.host?.lowercase() ?: return@runCatching null
+    val defaultPort = if (scheme == "http") 80 else 443
+    val effectivePort = uri.port.takeIf { it >= 0 } ?: defaultPort
+    val path = uri.rawPath.orEmpty().ifEmpty { "/" }
+    buildString {
+        append(scheme)
+        append("://")
+        if (':' in host && !host.startsWith('[')) append("[$host]") else append(host)
+        if (effectivePort != defaultPort) append(':').append(effectivePort)
+        append(path)
+        uri.rawQuery?.let { append('?').append(it) }
+    }
+}.getOrNull()
 
 internal fun isLocalWebAddress(value: String): Boolean = runCatching {
     URI(value).host?.lowercase() in setOf("127.0.0.1", "localhost", "::1", "[::1]")
