@@ -124,13 +124,13 @@
     {
       "id": "dev.foldcode.web",
       "name": "Web Development",
-      "version": "1.0.0+10",
+      "version": "1.0.0+11",
       "publisher": "FoldCode",
       "description": "Node.js, npm, JavaScript, TypeScript, React and browser preview with dedicated TypeScript, HTML, CSS and JSON IntelliSense on Android ARM64.",
       "dependencies": [],
       "provides": ["command:node", "command:npm", "command:npx", "language:javascript", "language:typescript", "language:html", "language:css", "language:json", "language-server:typescript", "language-server:html", "language-server:css", "language-server:json", "debugger:v8", "debugger:webview-cdp"],
       "corePackage": {
-        "url": "packages/foldcode-web-1.0.0-10.fcex",
+        "url": "packages/foldcode-web-1.0.0-11.fcex",
         "sha256": "GENERATED_BY_PREPARE_EXTENSION_SERVER",
         "sizeBytes": 1
       },

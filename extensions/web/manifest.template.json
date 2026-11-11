@@ -2,7 +2,7 @@
   "schemaVersion": 3,
   "id": "dev.foldcode.web",
   "name": "Web Development",
-  "version": "1.0.0+10",
+  "version": "1.0.0+11",
   "publisher": "FoldCode",
   "minimumHostVersionCode": 1,
   "description": "Node.js 24 LTS, npm 12, TypeScript 5.9, React 19 and Vite 8 with dedicated TypeScript, HTML, CSS and JSON IntelliSense plus Node and WebView browser debugging on Android ARM64.",

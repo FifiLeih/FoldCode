@@ -47,7 +47,7 @@ if [[ -f "$GNU_LANGUAGES_PACKAGE" ]]; then
   cp "$GNU_LANGUAGES_PACKAGE" "$PACKAGES/$(basename "$GNU_LANGUAGES_PACKAGE")"
   cp "$ARTIFACTS/components/gnu-languages-runtime-arm64.zip" "$COMPONENTS/"
 fi
-WEB_PACKAGE="$ARTIFACTS/foldcode-web-1.0.0-10.fcex"
+WEB_PACKAGE="$ARTIFACTS/foldcode-web-1.0.0-11.fcex"
 if [[ -f "$WEB_PACKAGE" ]]; then
   cp "$WEB_PACKAGE" "$PACKAGES/$(basename "$WEB_PACKAGE")"
   cp "$ARTIFACTS/components/web-runtime-arm64.zip" "$COMPONENTS/"
@@ -167,7 +167,7 @@ if gnu_payload.is_file() and gnu_package.is_file():
         "payloads": {gnu_payload.name: descriptor(gnu_payload, f"components/{gnu_payload.name}")},
     })
 web_payload = out / "components/web-runtime-arm64.zip"
-web_package = out / "packages/foldcode-web-1.0.0-10.fcex"
+web_package = out / "packages/foldcode-web-1.0.0-11.fcex"
 if web_payload.is_file() and web_package.is_file():
     catalog["extensions"].append({
         "id": "dev.foldcode.web",

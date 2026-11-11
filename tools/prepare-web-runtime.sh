@@ -161,7 +161,7 @@ npm audit --prefix "$patch_root" --package-lock-only --omit=dev --audit-level=hi
 NPM_ROOT="$npm_root" node <<'NODE'
 const path = require('path');
 const root = path.resolve(process.env.NPM_ROOT);
-const expected = { 'brace-expansion': '5.0.9', 'ip-address': '10.4.0', tar: '7.5.22', undici: '6.28.0' };
+const expected = { 'brace-expansion': '5.0.13', 'ip-address': '10.7.6', tar: '7.5.22', undici: '6.29.1' };
 for (const [name, version] of Object.entries(expected)) {
   const actual = require(path.join(root, 'node_modules', name, 'package.json')).version;
   if (actual !== version) throw new Error(`${name}: expected ${version}, found ${actual}`);

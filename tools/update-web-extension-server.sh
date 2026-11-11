@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
 SOURCE=${1:-"$ROOT/artifacts/extensions"}
 REGISTRY=${2:-"$ROOT/artifacts/extension-server/v2"}
-PACKAGE="$SOURCE/foldcode-web-1.0.0-10.fcex"
+PACKAGE="$SOURCE/foldcode-web-1.0.0-11.fcex"
 PAYLOAD="$SOURCE/components/web-runtime-arm64.zip"
 CATALOG="$REGISTRY/catalog.json"
 

@@ -141,7 +141,7 @@ The first release publishes these packages:
 - `foldcode-rust-1.0.0-4.fcex`
 - `foldcode-gnu-arm-15.2.1-1.fcex`
 - `foldcode-gnu-languages-1.0.0-6.fcex`
-- `foldcode-web-1.0.0-10.fcex`
+- `foldcode-web-1.0.0-11.fcex`
 
 The Android system file picker may show files differently from Samsung My Files or
 Google Files. You can select an extension from any visible location; it does not have
