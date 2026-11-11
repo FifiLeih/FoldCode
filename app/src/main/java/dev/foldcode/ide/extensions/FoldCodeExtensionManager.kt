@@ -1061,7 +1061,7 @@ internal class FoldCodeExtensionManager(private val context: Context) {
         const val VALIDATION_MARKER = ".validated"
         const val PAYLOAD_MARKER = ".foldcode-payload"
         const val CONSUMED_DIRECTORY = ".consumed"
-        const val HOST_VERSION_CODE = 1
+        const val HOST_VERSION_CODE = BuildConfig.VERSION_CODE
         const val MAX_PACKAGE_BYTES = 600L * 1024 * 1024
         const val MAX_EXTRACTED_PAYLOAD_BYTES = 800L * 1024 * 1024
         const val MAX_GNU_ARM_EXTRACTED_PAYLOAD_BYTES = 1536L * 1024 * 1024

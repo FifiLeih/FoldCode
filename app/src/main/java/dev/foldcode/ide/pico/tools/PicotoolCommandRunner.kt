@@ -77,7 +77,7 @@ internal class PicotoolCommandRunner(private val context: Context) {
         require(runtimeExecutable.isFile && runtimeLibrary().isFile) { "The Pico extension runtime is unavailable" }
         require(runtimeExecutable.canExecute() || runtimeExecutable.setExecutable(true, false)) { "Picotool is not executable" }
         File(context.filesDir, "pico-tools-runtime/tmp").mkdirs()
-        val executable = File(context.applicationInfo.nativeLibraryDir, "foldpicotool.so")
+        val executable = File(context.applicationInfo.nativeLibraryDir, "libfoldpicotool.so")
         require(executable.isFile && executable.canExecute()) { "The FoldCode picotool host is unavailable" }
         val command = listOf(executable.absolutePath) + arguments
         val usbDescriptor = usbConnection?.fileDescriptor?.takeIf { it >= 0 }

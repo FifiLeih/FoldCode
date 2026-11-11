@@ -249,22 +249,22 @@ internal class ProjectTerminal(private val context: Context) {
 
     private fun installToolLinks(directory: File) {
         val tools = mutableMapOf(
-            "python" to "foldpython.so",
-            "python3" to "foldpython.so",
-            "pip" to "foldpython.so",
-            "pip3" to "foldpython.so",
+            "python" to "libfoldpython.so",
+            "python3" to "libfoldpython.so",
+            "pip" to "libfoldpython.so",
+            "pip3" to "libfoldpython.so",
             "clang" to "libfoldclang.so",
             "clang++" to "libfoldclang.so",
-            "ld.lld" to "foldlld.so",
+            "ld.lld" to "libfoldlld.so",
         )
         if (File(context.filesDir, "web-runtime/bin/node").isFile ||
             File(context.filesDir, "web-runtime/lib/libnode.so").isFile
         ) {
-            tools["node"] = "foldnode.so"
-            tools["npm"] = "foldnode.so"
-            tools["npx"] = "foldnode.so"
+            tools["node"] = "libfoldnode.so"
+            tools["npm"] = "libfoldnode.so"
+            tools["npx"] = "libfoldnode.so"
         }
-        tools["git"] = "foldgit.so"
+        tools["git"] = "libfoldgit.so"
         // The GNU Arm payload is optional, but once installed its complete
         // binutils surface should behave like an ordinary command-line
         // toolchain. The launcher selects the actual tool from argv[0].
@@ -272,7 +272,7 @@ internal class ProjectTerminal(private val context: Context) {
             listOf(
                 "gcc", "g++", "c++", "cpp", "as", "ld", "ld.bfd", "ar", "ranlib", "nm",
                 "objcopy", "objdump", "readelf", "size", "strings", "strip",
-            ).forEach { tool -> tools["arm-none-eabi-$tool"] = "foldgnuarm.so" }
+            ).forEach { tool -> tools["arm-none-eabi-$tool"] = "libfoldgnuarm.so" }
         }
         tools.forEach { (command, packagedName) ->
             val target = File(context.applicationInfo.nativeLibraryDir, packagedName)

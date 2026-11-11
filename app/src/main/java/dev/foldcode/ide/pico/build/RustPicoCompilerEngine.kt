@@ -133,7 +133,7 @@ internal class RustPicoCompilerEngine(private val context: Context) {
         if (!manifest.isFile) return BuildResult(false, "Cargo.toml is missing")
 
         val runtime = File(context.filesDir, "rust-runtime")
-        val launcher = File(context.applicationInfo.nativeLibraryDir, "foldrust.so")
+        val launcher = File(context.applicationInfo.nativeLibraryDir, "libfoldrust.so")
         if (!launcher.canExecute()) return BuildResult(false, "FoldCode Rust launcher is unavailable")
         val targetDirectory = cargoTargetDirectory(project).apply { mkdirs() }
         val pidSession = BuildPidRegistry.open(context.cacheDir)
@@ -288,7 +288,7 @@ internal class RustPicoCompilerEngine(private val context: Context) {
     ): Boolean {
         if (cancelled.get()) return false
         val runtime = File(context.filesDir, "rust-runtime")
-        val launcher = File(context.applicationInfo.nativeLibraryDir, "foldrust.so")
+        val launcher = File(context.applicationInfo.nativeLibraryDir, "libfoldrust.so")
         if (!launcher.canExecute()) error("FoldCode Rust launcher is unavailable")
         val pidSession = BuildPidRegistry.open(context.cacheDir)
         val process = try {
@@ -355,7 +355,7 @@ internal class RustPicoCompilerEngine(private val context: Context) {
             output("Install the Pico extension's Core SDK and CMake component to create UF2 files")
             return false
         }
-        val launcher = File(context.applicationInfo.nativeLibraryDir, "foldpicotool.so")
+        val launcher = File(context.applicationInfo.nativeLibraryDir, "libfoldpicotool.so")
         if (!launcher.canExecute()) error("FoldCode picotool launcher is unavailable")
         val pidSession = BuildPidRegistry.open(context.cacheDir)
         val process = try {

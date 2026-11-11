@@ -10,11 +10,11 @@ internal class BundledToolchain(private val context: Context) {
     // Small executable launchers remain APK-labelled. Their large LLVM/Clang
     // dependencies are supplied by the server-delivered C/C++ extension.
     val clang = File(context.applicationInfo.nativeLibraryDir, "libfoldclang.so")
-    val clangd = File(context.applicationInfo.nativeLibraryDir, "foldclangd.so")
+    val clangd = File(context.applicationInfo.nativeLibraryDir, "libfoldclangd.so")
     val clangdCore = File(nativeDependencies, "libfoldclangdcore.so")
-    val lld = File(context.applicationInfo.nativeLibraryDir, "foldlld.so")
+    val lld = File(context.applicationInfo.nativeLibraryDir, "libfoldlld.so")
     val gnuLd = File(context.applicationInfo.nativeLibraryDir, "libfoldld.so")
-    val pioasm = File(context.applicationInfo.nativeLibraryDir, "foldpioasm.so")
+    val pioasm = File(context.applicationInfo.nativeLibraryDir, "libfoldpioasm.so")
     val resourceDir = File(root, "lib/clang/21")
     val sysroot = File(root, "sysroot")
 

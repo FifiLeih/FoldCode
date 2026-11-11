@@ -26,7 +26,7 @@ const command = [
   `FOLDCODE_CLANGD_CORE=${appFiles}/cpp-runtime/native/libfoldclangdcore.so`,
   `LD_LIBRARY_PATH=${appFiles}/cpp-runtime/native:${native}`,
   `TMPDIR=/data/user/0/${packageName}/cache`,
-  `${native}/foldclangd.so`,
+  `${native}/libfoldclangd.so`,
   "--background-index=false",
   "--clang-tidy=false",
   "--completion-style=detailed",

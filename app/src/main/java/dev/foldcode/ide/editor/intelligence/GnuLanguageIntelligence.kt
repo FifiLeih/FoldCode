@@ -113,7 +113,7 @@ internal class GnuLanguageIntelligence(context: Context) : Closeable {
             else -> return structural
         }
         val runtime = File(appFilesDirectory, "gnu-languages-runtime")
-        val launcher = File(applicationContext.applicationInfo.nativeLibraryDir, "foldgnulang.so")
+        val launcher = File(applicationContext.applicationInfo.nativeLibraryDir, "libfoldgnulang.so")
         if (!launcher.canExecute() || !File(runtime, "rootfs/usr/bin/${if (language == GnuProjectLanguage.Fortran) "gfortran" else "cobc"}").isFile) {
             return structural
         }

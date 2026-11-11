@@ -8,11 +8,11 @@ internal class DebuggerRuntime(private val context: Context) {
     private val cppRoot get() = File(context.filesDir, "cpp-runtime")
     private val picoRoot get() = File(context.filesDir, "pico-tools-runtime")
 
-    val lldbDapLauncher: File get() = File(context.applicationInfo.nativeLibraryDir, "foldlldbdap.so")
-    val debuggeeLauncher: File get() = File(context.applicationInfo.nativeLibraryDir, "folddebuggee.so")
-    val lldbServer: File get() = File(context.applicationInfo.nativeLibraryDir, "foldlldbserver.so")
+    val lldbDapLauncher: File get() = File(context.applicationInfo.nativeLibraryDir, "libfoldlldbdap.so")
+    val debuggeeLauncher: File get() = File(context.applicationInfo.nativeLibraryDir, "libfolddebuggee.so")
+    val lldbServer: File get() = File(context.applicationInfo.nativeLibraryDir, "libfoldlldbserver.so")
     val lldbCore: File get() = File(cppRoot, "native/libfoldlldbdapcore.so")
-    val openOcdLauncher: File get() = File(context.applicationInfo.nativeLibraryDir, "foldopenocd.so")
+    val openOcdLauncher: File get() = File(context.applicationInfo.nativeLibraryDir, "libfoldopenocd.so")
     val openOcdExecutable: File get() = File(picoRoot, "debug/bin/openocd")
     val openOcdScripts: File get() = File(picoRoot, "debug/share/openocd/scripts")
 

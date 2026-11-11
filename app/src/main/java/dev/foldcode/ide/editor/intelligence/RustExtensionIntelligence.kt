@@ -320,7 +320,7 @@ internal class RustExtensionIntelligence(private val context: Context) : Closeab
             .onFailure { Log.e(TAG, "Could not prepare the Rust extension runtime", it) }
             .getOrNull() ?: return false
         val analyzer = File(runtime, "toolchain/bin/rust-analyzer")
-        val launcher = File(context.applicationInfo.nativeLibraryDir, "foldrust.so")
+        val launcher = File(context.applicationInfo.nativeLibraryDir, "libfoldrust.so")
         if (!analyzer.isFile || !launcher.canExecute()) return false
         val cargoTargetDirectory = File(
             context.filesDir,
@@ -563,7 +563,7 @@ internal class RustExtensionIntelligence(private val context: Context) : Closeab
         consumeOutput: (String) -> Unit,
     ): Boolean {
         if (ticket != diagnosticsGeneration.get() || cargoTicket != cargoDiagnosticsGeneration.get()) return false
-        val launcher = File(context.applicationInfo.nativeLibraryDir, "foldrust.so")
+        val launcher = File(context.applicationInfo.nativeLibraryDir, "libfoldrust.so")
         if (!launcher.canExecute()) return false
         val child = runCatching {
             ProcessBuilder(listOf(launcher.absolutePath) + arguments)

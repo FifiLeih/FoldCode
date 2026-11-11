@@ -3,7 +3,10 @@ set -euo pipefail
 
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
 APK=${1:-}
-OUTPUT=${2:-"$ROOT/dist/foldcode-1.0.0"}
+VERSION=$(sed -n 's/^[[:space:]]*versionName = "\([^"]*\)".*/\1/p' "$ROOT/app/build.gradle.kts")
+[[ -n "$VERSION" ]] || { echo "App version is missing" >&2; exit 1; }
+APK_NAME="FoldCode-$VERSION-arm64-v8a.apk"
+OUTPUT=${2:-"$ROOT/dist/foldcode-$VERSION"}
 
 [[ -n "$APK" && -f "$APK" ]] || {
   echo "Usage: tools/prepare-github-release.sh /path/to/signed-release.apk [empty-output-directory]" >&2
@@ -51,13 +54,13 @@ BASE_RUNTIME="$ROOT/artifacts/base-runtime/foldcode-base-native-arm64-v1.zip"
 [[ -f "$BASE_RUNTIME" ]] || { echo "Missing contributor base runtime bundle" >&2; exit 1; }
 
 mkdir -p "$OUTPUT"
-install -m 0644 "$APK" "$OUTPUT/FoldCode-1.0.0-arm64-v8a.apk"
+install -m 0644 "$APK" "$OUTPUT/$APK_NAME"
 for package in "${EXTENSIONS[@]}"; do
   install -m 0644 "$ROOT/artifacts/extensions/$package" "$OUTPUT/$package"
 done
 install -m 0644 "$BASE_RUNTIME" "$OUTPUT/$(basename "$BASE_RUNTIME")"
 (
   cd "$OUTPUT"
-  shasum -a 256 FoldCode-1.0.0-arm64-v8a.apk "${EXTENSIONS[@]}" "$(basename "$BASE_RUNTIME")" > SHA256SUMS
+  shasum -a 256 "$APK_NAME" "${EXTENSIONS[@]}" "$(basename "$BASE_RUNTIME")" > SHA256SUMS
 )
 echo "GitHub release assets staged in: $OUTPUT"

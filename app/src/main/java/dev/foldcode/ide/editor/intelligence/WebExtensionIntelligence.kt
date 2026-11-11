@@ -157,7 +157,7 @@ private class WebLspSession(
         // child_process.fork(tsserver.js), so make process.execPath point back
         // to that permitted launcher instead of linker64. The preload is also
         // inherited by tsserver and keeps any nested Node forks valid.
-        val launcher = File(context.applicationInfo.nativeLibraryDir, "foldnode.so")
+        val launcher = File(context.applicationInfo.nativeLibraryDir, "libfoldnode.so")
         if (!launcher.canExecute()) {
             Log.e(TAG, "Node launcher is not executable: ${launcher.absolutePath}")
             return false

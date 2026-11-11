@@ -7,7 +7,7 @@ an editor, terminal, build tools, language intelligence, debugging, Git, web pre
 and Raspberry Pi Pico development in one application. The interface adapts to phones,
 foldables, tablets, external displays, and Samsung DeX.
 
-FoldCode 1.0.0 installs large language runtimes and toolchains from locally selected
+FoldCode 1.0.5 installs large language runtimes and toolchains from locally selected
 `.fcex` files. The public release does not contact an extension marketplace or extension
 distribution server.
 
@@ -19,7 +19,7 @@ distribution server.
 - Sufficient free storage for the selected extensions, dependencies, and build caches
 - USB host/OTG support only when flashing a Raspberry Pi Pico over USB
 
-The 1.0.0 release has been tested primarily on a Samsung Galaxy Z Fold 5. Other ARM64
+Device testing has focused primarily on a Samsung Galaxy Z Fold 5. Other ARM64
 phones, foldables, tablets, and desktop modes should work, but have not received the
 same device-specific coverage.
 
@@ -121,9 +121,9 @@ Git support and the small Android-compatible command launchers are part of the b
 application. Compiler libraries, SDKs, language servers, standard libraries, and other
 large runtime data remain in independently installed extensions.
 
-## Install FoldCode 1.0.0
+## Install FoldCode 1.0.5
 
-1. Download `FoldCode-1.0.0-arm64-v8a.apk`, `SHA256SUMS`, and the `.fcex` packages you
+1. Download `FoldCode-1.0.5-arm64-v8a.apk`, `SHA256SUMS`, and the `.fcex` packages you
    want from the GitHub release.
 2. Verify the downloaded files against `SHA256SUMS`. On macOS, run
    `shasum -a 256 -c SHA256SUMS`; on Linux, run `sha256sum -c SHA256SUMS`.
@@ -151,13 +151,13 @@ host version before atomically activating it.
 
 ### Storage permission
 
-FoldCode 1.0.0 uses a full-filesystem workspace so projects can be created, imported,
+FoldCode 1.0.5 uses a full-filesystem workspace so projects can be created, imported,
 and used by native build tools under `Internal storage/FoldCode/Projects`. On Android
 11 and newer this requires the special **All files access** permission. Android lists
 that permission under **Special access**, so the ordinary App info → Permissions page
 may still say “No permissions required.”
 
-This permission is mandatory for the 1.0.0 workspace design. A future permission-free
+This permission is mandatory for the current workspace design. A future permission-free
 workspace mode can use Android's document-provider storage model, but it is not part of
 this release.
 

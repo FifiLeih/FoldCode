@@ -168,7 +168,7 @@ internal class GnuLanguagesCompilerEngine(private val context: Context) {
 
     private fun start(project: File, tool: String, arguments: List<String>): Result<Process> = runCatching {
         val runtime = File(appFilesDirectory, "gnu-languages-runtime")
-        val launcher = File(context.applicationInfo.nativeLibraryDir, "foldgnulang.so")
+        val launcher = File(context.applicationInfo.nativeLibraryDir, "libfoldgnulang.so")
         require(launcher.canExecute()) { "FoldCode GNU Languages launcher is unavailable" }
         ProcessBuilder(listOf(launcher.absolutePath) + arguments)
             .directory(project)

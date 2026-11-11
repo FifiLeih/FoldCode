@@ -37,7 +37,7 @@ To add another Raspberry Pi silicon family or board, add its description in
 one `package_target` line to the update script. It still uses the same SDK release.
 
 The official SDK's `pioasm` sources are compiled by Android's NDK as
-`foldpioasm.so`, so `.pio` sources are converted to headers locally on the phone.
+`libfoldpioasm.so`, so `.pio` sources are converted to headers locally on the phone.
 This small executable remains in the extension host because Android does not allow
 executing downloaded binaries from writable app storage; the large SDK/toolchain
 payloads live exclusively in the installable extension.

@@ -51,6 +51,15 @@ val requiredBaseNativeFiles = listOf(
     "libfoldriscvobjdump.so",
     "libfoldriscvranlib.so",
 )
+// These are built from source (or copied from the NDK), not supplied by the
+// contributor bundle. Require them in the release APK as well as the base files.
+val requiredNativeLauncherFiles = listOf(
+    "libfoldlld.so", "libfoldclangd.so", "libfoldlldbdap.so", "libfoldlldbserver.so",
+    "libfolddebuggee.so", "libfoldpioasm.so", "libfoldpicopad.so", "libfoldnm.so",
+    "libfoldpython.so", "libfoldnode.so", "libfoldgit.so", "libfoldgnuarm.so",
+    "libfoldgnulang.so", "libfoldpicotool.so", "libfoldopenocd.so", "libfoldrust.so",
+    "libfoldrustc.so", "libfoldrustdoc.so", "libfoldrustfmt.so",
+)
 val androidSdkDirectory = file(
     localProperties.getProperty("sdk.dir")
         ?: System.getenv("ANDROID_SDK_ROOT")
@@ -80,10 +89,10 @@ val generatedLldbServerDirectory = layout.buildDirectory.dir("generated/lldb-ser
 val generatedLegalAssetsDirectory = layout.buildDirectory.dir("generated/legal-assets")
 val generatedBaseAssetsDirectory = layout.buildDirectory.dir("generated/base-assets")
 val generatedBaseNativeDirectory = layout.buildDirectory.dir("generated/base-native/jniLibs")
-val prepareLldbServer by tasks.registering(Copy::class) {
+val prepareLldbServer by tasks.registering(Sync::class) {
     from(packagedLldbServerSource)
     into(generatedLldbServerDirectory.map { it.dir("arm64-v8a") })
-    rename { "foldlldbserver.so" }
+    rename { "libfoldlldbserver.so" }
 }
 val prepareLegalNotices by tasks.registering(Copy::class) {
     from(rootProject.file("LICENSE"), rootProject.file("NOTICE"), rootProject.file("THIRD_PARTY_NOTICES.md"))
@@ -125,8 +134,8 @@ android {
         applicationId = "dev.foldcode.ide"
         minSdk = 26
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0.0"
+        versionCode = 5
+        versionName = "1.0.5"
         // Public releases use local .fcex installation. A catalog is a debug-only
         // development convenience until a signed distribution service exists.
         buildConfigField("String", "EXTENSION_CATALOG_URL", "\"\"")
@@ -276,10 +285,20 @@ val verifyReleaseApkContents by tasks.registering {
         val required = setOf(
             "assets/git/cacert.pem",
             "assets/templates/pico_sdk_import.cmake",
-        ) + requiredBaseNativeFiles.map { "lib/arm64-v8a/$it" }
+        ) + (requiredBaseNativeFiles + requiredNativeLauncherFiles + listOf(
+            "libfoldpico_runtime.so", "libfoldbuildpid.so",
+        )).map { "lib/arm64-v8a/$it" }
         apks.forEach { apk ->
             ZipFile(apk).use { archive ->
                 val entries = archive.entries().asSequence().map { it.name }.toSet()
+                val invalidNativeNames = entries.filter { entry ->
+                    entry.startsWith("lib/") && !entry.endsWith("/") &&
+                        !entry.substringAfterLast('/').matches(Regex("lib.+\\.so"))
+                }
+                check(invalidNativeNames.isEmpty()) {
+                    "Native tools must use lib*.so names for release extraction in ${apk.name}: " +
+                        invalidNativeNames.sorted().joinToString()
+                }
                 val leaked = forbidden.intersect(entries)
                 check(leaked.isEmpty()) {
                     "Forbidden release inputs in ${apk.name}: ${leaked.sorted().joinToString()}"

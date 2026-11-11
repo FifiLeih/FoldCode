@@ -233,7 +233,7 @@ class CompilerEngine(private val context: Context) {
         } catch (error: Exception) {
             return BuildResult(false, "Python runtime installation failed: ${error.message}")
         }
-        val python = File(context.applicationInfo.nativeLibraryDir, "foldpython.so")
+        val python = File(context.applicationInfo.nativeLibraryDir, "libfoldpython.so")
         if (!python.canExecute()) return BuildResult(false, "Python launcher is unavailable: ${python.absolutePath}")
 
         val syntax = runCommand(

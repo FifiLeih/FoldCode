@@ -17,11 +17,12 @@ target_compile_features(foldbuildpid PRIVATE cxx_std_17)
 target_compile_options(foldbuildpid PRIVATE -Wall -Wextra -Werror)
 target_link_options(foldbuildpid PRIVATE "-Wl,-z,max-page-size=16384")
 
-# Clang selects LLD's driver personality from argv[0]. Android only extracts files
-# following its native-library naming convention, so this executable wrapper gives
+# Every executable below must be packaged as lib*.so: non-debuggable Android
+# installs otherwise skip extraction on supported older Android versions.
+# Clang selects LLD's driver personality from argv[0], so this wrapper gives
 # the packaged core the expected "ld.lld" argv[0].
 add_executable(foldlld launchers/lld_wrapper.cpp)
-set_target_properties(foldlld PROPERTIES OUTPUT_NAME "foldlld" SUFFIX ".so")
+set_target_properties(foldlld PROPERTIES OUTPUT_NAME "libfoldlld" SUFFIX ".so")
 target_link_libraries(foldlld PRIVATE dl)
 target_link_options(foldlld PRIVATE "-Wl,-z,max-page-size=16384")
 
@@ -30,7 +31,7 @@ target_link_options(foldlld PRIVATE "-Wl,-z,max-page-size=16384")
 # respected while the large, independently updateable clangd core stays in the
 # extension payload.
 add_executable(foldclangd launchers/clangd_wrapper.cpp)
-set_target_properties(foldclangd PROPERTIES OUTPUT_NAME "foldclangd" SUFFIX ".so")
+set_target_properties(foldclangd PROPERTIES OUTPUT_NAME "libfoldclangd" SUFFIX ".so")
 target_link_libraries(foldclangd PRIVATE dl)
 target_compile_features(foldclangd PRIVATE cxx_std_17)
 target_compile_options(foldclangd PRIVATE -Wall -Wextra -Werror)
@@ -40,14 +41,14 @@ target_link_options(foldclangd PRIVATE "-Wl,-z,max-page-size=16384")
 # shared core. This stable APK-owned entry point satisfies Android's executable
 # code policy while allowing the debugger to be updated independently.
 add_executable(foldlldbdap launchers/lldb_dap_wrapper.cpp)
-set_target_properties(foldlldbdap PROPERTIES OUTPUT_NAME "foldlldbdap" SUFFIX ".so")
+set_target_properties(foldlldbdap PROPERTIES OUTPUT_NAME "libfoldlldbdap" SUFFIX ".so")
 target_link_libraries(foldlldbdap PRIVATE dl)
 target_compile_features(foldlldbdap PRIVATE cxx_std_17)
 target_compile_options(foldlldbdap PRIVATE -Wall -Wextra -Werror)
 target_link_options(foldlldbdap PRIVATE "-Wl,-z,max-page-size=16384")
 
 add_executable(folddebuggee launchers/debuggee_launcher.cpp)
-set_target_properties(folddebuggee PROPERTIES OUTPUT_NAME "folddebuggee" SUFFIX ".so")
+set_target_properties(folddebuggee PROPERTIES OUTPUT_NAME "libfolddebuggee" SUFFIX ".so")
 target_compile_features(folddebuggee PRIVATE cxx_std_17)
 target_compile_options(folddebuggee PRIVATE -Wall -Wextra -Werror)
 target_link_libraries(folddebuggee PRIVATE dl)
@@ -68,7 +69,7 @@ add_executable(foldpioasm
         pioasm/json_output.cpp
         pioasm/ada_output.cpp
         pioasm/go_output.cpp)
-set_target_properties(foldpioasm PROPERTIES OUTPUT_NAME "foldpioasm" SUFFIX ".so")
+set_target_properties(foldpioasm PROPERTIES OUTPUT_NAME "libfoldpioasm" SUFFIX ".so")
 target_include_directories(foldpioasm PRIVATE pioasm pioasm/gen)
 target_compile_features(foldpioasm PRIVATE cxx_std_17)
 target_link_options(foldpioasm PRIVATE "-Wl,-z,max-page-size=16384")
@@ -76,7 +77,7 @@ target_link_options(foldpioasm PRIVATE "-Wl,-z,max-page-size=16384")
 # Native replacement for the SDK's deterministic RP2040/RP2350 boot padding
 # Python scripts. This keeps ordinary official SDK builds Python-free on Android.
 add_executable(foldpicopad pico/pico_boot_pad.cpp)
-set_target_properties(foldpicopad PROPERTIES OUTPUT_NAME "foldpicopad" SUFFIX ".so")
+set_target_properties(foldpicopad PROPERTIES OUTPUT_NAME "libfoldpicopad" SUFFIX ".so")
 target_compile_features(foldpicopad PRIVATE cxx_std_17)
 target_compile_options(foldpicopad PRIVATE -Wall -Wextra -Werror)
 target_link_options(foldpicopad PRIVATE "-Wl,-z,max-page-size=16384")
@@ -86,7 +87,7 @@ target_link_options(foldpicopad PRIVATE "-Wl,-z,max-page-size=16384")
 # thread-local-storage ABI during configure; no host-side Python or downloaded
 # executable code is required.
 add_executable(foldnm pico/pico_nm.cpp)
-set_target_properties(foldnm PROPERTIES OUTPUT_NAME "foldnm" SUFFIX ".so")
+set_target_properties(foldnm PROPERTIES OUTPUT_NAME "libfoldnm" SUFFIX ".so")
 target_compile_features(foldnm PRIVATE cxx_std_17)
 target_compile_options(foldnm PRIVATE -Wall -Wextra -Werror)
 target_link_options(foldnm PRIVATE "-Wl,-z,max-page-size=16384")
@@ -94,14 +95,14 @@ target_link_options(foldnm PRIVATE "-Wl,-z,max-page-size=16384")
 # Python itself is downloaded as an extension. This tiny APK-labelled host loads
 # the official python.org Android libpython and exposes normal CLI semantics to CMake.
 add_executable(foldpython launchers/python_launcher.cpp)
-set_target_properties(foldpython PROPERTIES OUTPUT_NAME "foldpython" SUFFIX ".so")
+set_target_properties(foldpython PROPERTIES OUTPUT_NAME "libfoldpython" SUFFIX ".so")
 target_compile_features(foldpython PRIVATE cxx_std_17)
 target_compile_options(foldpython PRIVATE -Wall -Wextra -Werror)
 target_link_libraries(foldpython PRIVATE dl)
 target_link_options(foldpython PRIVATE "-Wl,-z,max-page-size=16384")
 
 add_executable(foldnode launchers/node_launcher.cpp)
-set_target_properties(foldnode PROPERTIES OUTPUT_NAME "foldnode" SUFFIX ".so")
+set_target_properties(foldnode PROPERTIES OUTPUT_NAME "libfoldnode" SUFFIX ".so")
 target_compile_features(foldnode PRIVATE cxx_std_17)
 target_compile_options(foldnode PRIVATE -Wall -Wextra -Werror)
 target_link_libraries(foldnode PRIVATE dl)
@@ -110,7 +111,7 @@ target_link_options(foldnode PRIVATE "-Wl,-z,max-page-size=16384")
 # Upstream Git is packaged as libfoldgitcore.so. This stable APK-labelled entry
 # point gives it the conventional `git` argv[0].
 add_executable(foldgit launchers/git_launcher.cpp)
-set_target_properties(foldgit PROPERTIES OUTPUT_NAME "foldgit" SUFFIX ".so")
+set_target_properties(foldgit PROPERTIES OUTPUT_NAME "libfoldgit" SUFFIX ".so")
 target_compile_features(foldgit PRIVATE cxx_std_17)
 target_compile_options(foldgit PRIVATE -Wall -Wextra -Werror)
 target_link_options(foldgit PRIVATE "-Wl,-z,max-page-size=16384")
@@ -118,7 +119,7 @@ target_link_options(foldgit PRIVATE "-Wl,-z,max-page-size=16384")
 # Official Arm GNU executables are Linux/glibc programs. This APK-labelled host
 # enters the extension's minimal glibc root through the bundled PRoot engine.
 add_executable(foldgnuarm launchers/gnu_arm_launcher.cpp)
-set_target_properties(foldgnuarm PROPERTIES OUTPUT_NAME "foldgnuarm" SUFFIX ".so")
+set_target_properties(foldgnuarm PROPERTIES OUTPUT_NAME "libfoldgnuarm" SUFFIX ".so")
 target_compile_features(foldgnuarm PRIVATE cxx_std_17)
 target_compile_options(foldgnuarm PRIVATE -Wall -Wextra -Werror)
 target_link_options(foldgnuarm PRIVATE "-Wl,-z,max-page-size=16384")
@@ -127,7 +128,7 @@ target_link_options(foldgnuarm PRIVATE "-Wl,-z,max-page-size=16384")
 # AArch64 glibc/GCC runtime. This APK-labelled entry point keeps that large
 # compiler payload in the independently updateable language extension.
 add_executable(foldgnulang launchers/gnu_languages_launcher.cpp)
-set_target_properties(foldgnulang PROPERTIES OUTPUT_NAME "foldgnulang" SUFFIX ".so")
+set_target_properties(foldgnulang PROPERTIES OUTPUT_NAME "libfoldgnulang" SUFFIX ".so")
 target_compile_features(foldgnulang PRIVATE cxx_std_17)
 target_compile_options(foldgnulang PRIVATE -Wall -Wextra -Werror)
 target_link_options(foldgnulang PRIVATE "-Wl,-z,max-page-size=16384")
@@ -136,7 +137,7 @@ target_link_options(foldgnulang PRIVATE "-Wl,-z,max-page-size=16384")
 # permit an ordinary app process to execute downloaded native code directly,
 # so this tiny APK-labelled host runs it through the existing PRoot bridge.
 add_executable(foldpicotool launchers/picotool_launcher.cpp)
-set_target_properties(foldpicotool PROPERTIES OUTPUT_NAME "foldpicotool" SUFFIX ".so")
+set_target_properties(foldpicotool PROPERTIES OUTPUT_NAME "libfoldpicotool" SUFFIX ".so")
 target_compile_features(foldpicotool PRIVATE cxx_std_17)
 target_compile_options(foldpicotool PRIVATE -Wall -Wextra -Werror)
 target_link_options(foldpicotool PRIVATE "-Wl,-z,max-page-size=16384")
@@ -145,7 +146,7 @@ target_link_options(foldpicotool PRIVATE "-Wl,-z,max-page-size=16384")
 # runtime boundary as picotool and GNU Arm; Android USB descriptors are supplied
 # by the Kotlin transport when an SWD probe is selected.
 add_executable(foldopenocd launchers/openocd_launcher.cpp)
-set_target_properties(foldopenocd PROPERTIES OUTPUT_NAME "foldopenocd" SUFFIX ".so")
+set_target_properties(foldopenocd PROPERTIES OUTPUT_NAME "libfoldopenocd" SUFFIX ".so")
 target_compile_features(foldopenocd PRIVATE cxx_std_17)
 target_compile_options(foldopenocd PRIVATE -Wall -Wextra -Werror)
 target_link_options(foldopenocd PRIVATE "-Wl,-z,max-page-size=16384")
@@ -154,7 +155,7 @@ target_link_options(foldopenocd PRIVATE "-Wl,-z,max-page-size=16384")
 # This executable host keeps downloaded code outside the base APK while running
 # it through the same Android-compatible PRoot boundary used by GNU Arm.
 add_executable(foldrust launchers/rust_launcher.cpp)
-set_target_properties(foldrust PROPERTIES OUTPUT_NAME "foldrust" SUFFIX ".so")
+set_target_properties(foldrust PROPERTIES OUTPUT_NAME "libfoldrust" SUFFIX ".so")
 target_compile_features(foldrust PRIVATE cxx_std_17)
 target_compile_options(foldrust PRIVATE -Wall -Wextra -Werror)
 target_link_options(foldrust PRIVATE "-Wl,-z,max-page-size=16384")
@@ -164,7 +165,7 @@ target_link_options(foldrust PRIVATE "-Wl,-z,max-page-size=16384")
 # same translated runtime without placing downloaded executables in the APK.
 foreach(rust_child IN ITEMS rustc rustdoc rustfmt)
     add_executable(fold${rust_child} launchers/rust_launcher.cpp)
-    set_target_properties(fold${rust_child} PROPERTIES OUTPUT_NAME "fold${rust_child}" SUFFIX ".so")
+    set_target_properties(fold${rust_child} PROPERTIES OUTPUT_NAME "libfold${rust_child}" SUFFIX ".so")
     target_compile_features(fold${rust_child} PRIVATE cxx_std_17)
     target_compile_options(fold${rust_child} PRIVATE -Wall -Wextra -Werror)
     target_link_options(fold${rust_child} PRIVATE "-Wl,-z,max-page-size=16384")

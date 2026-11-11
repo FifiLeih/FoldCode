@@ -5,7 +5,7 @@
 - Confirm every intended source file is tracked and `git status --short` is clean.
 - Publish only the reviewed public-release branch. Do not push unrelated local branches,
   tags, or use `--all`.
-- Confirm `versionName` is `1.0.0`, `versionCode` is `1`, `minSdk` is 26, and the
+- Confirm `versionName` is `1.0.5`, `versionCode` is `5`, `minSdk` is 26, and the
   packaged ABI is only `arm64-v8a`.
 - Check every local Markdown link and verify the README installation, permission,
   privacy, extension, and source-build instructions against the release candidate.
@@ -89,5 +89,5 @@ Do not upload old `.fcex` revisions, the obsolete Git extension, local catalogs,
 `local.properties`, build directories, server directories, or signing material.
 
 Before publishing, inspect the staging directory directly, verify every line in
-`SHA256SUMS`, attach concise 1.0.0 release notes and installation requirements, and
+`SHA256SUMS`, attach concise 1.0.5 release notes and installation requirements, and
 download the published assets once to confirm their names, sizes, hashes, and signatures.

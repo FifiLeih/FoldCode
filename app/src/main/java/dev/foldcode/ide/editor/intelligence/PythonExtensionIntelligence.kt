@@ -118,7 +118,7 @@ internal class PythonExtensionIntelligence(private val context: Context) : Close
         val canonical = runCatching { directory.canonicalFile }.getOrNull() ?: return false
         if (process?.isAlive == true && project == canonical) return true
         stop()
-        val python = File(context.applicationInfo.nativeLibraryDir, "foldpython.so")
+        val python = File(context.applicationInfo.nativeLibraryDir, "libfoldpython.so")
         if (!python.canExecute()) return false
         val runtime = File(context.filesDir, "python-runtime")
         val child = runCatching {

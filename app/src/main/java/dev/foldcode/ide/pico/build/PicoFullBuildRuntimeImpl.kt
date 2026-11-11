@@ -20,7 +20,7 @@ internal class PicoFullBuildRuntimeImpl(private val context: Context) : PicoFull
         System.loadLibrary("foldpico_runtime")
     }
 
-    override val version: String = "7"
+    override val version: String = "8"
 
     override fun probe(): String = nativeProbe()
 
@@ -89,6 +89,7 @@ internal class PicoFullBuildRuntimeImpl(private val context: Context) : PicoFull
                 compilerProfile(request, useGnuArm),
                 sdk.absolutePath,
                 sysroot.absolutePath,
+                tools.linker.absolutePath,
             ).joinToString("\n")
             val metadataDirectory = File(build, "CMakeFiles/FoldCode")
             val configurationMarker = File(metadataDirectory, "configuration")
@@ -472,9 +473,11 @@ internal class PicoFullBuildRuntimeImpl(private val context: Context) : PicoFull
         File(prefix, "include/android/api-level.h").writeText("#define __ANDROID_API__ 28\n")
         val native = File(context.applicationInfo.nativeLibraryDir)
         fun link(name: String, library: String): File {
+            val target = File(native, library)
+            require(target.canExecute()) { "Bundled native tool is missing or not executable: $target" }
             val destination = File(bin, name)
             Files.deleteIfExists(destination.toPath())
-            Files.createSymbolicLink(destination.toPath(), File(native, library).toPath())
+            Files.createSymbolicLink(destination.toPath(), target.toPath())
             return destination
         }
         val cmake = link("cmake", "libfoldcmake.so")
@@ -488,24 +491,26 @@ internal class PicoFullBuildRuntimeImpl(private val context: Context) : PicoFull
         }
         // The APK contains only the small Android/PRoot host. The actual
         // picotool executable and libusb are delivered by the Pico extension.
-        val picotool = link("picotool", "foldpicotool.so")
-        val pioasm = link("pioasm", "foldpioasm.so")
+        val picotool = link("picotool", "libfoldpicotool.so")
+        val pioasm = link("pioasm", "libfoldpioasm.so")
         val extensionManager = FoldCodeExtensionManager(context)
         if (extensionManager.isPythonInstalled()) {
             extensionManager.installPythonRuntime()
-            val python = link("python3", "foldpython.so")
+            val python = link("python3", "libfoldpython.so")
             Files.deleteIfExists(File(bin, "python").toPath())
             Files.createSymbolicLink(File(bin, "python").toPath(), python.toPath())
         }
         // Git is a base-app service shared with Source Control and the terminal.
         // Keep the conventional command available to arbitrary project CMake.
-        link("git", "foldgit.so")
+        link("git", "libfoldgit.so")
         val gnuArmLauncher = if (useGnuArm) {
             extensionManager.installGnuArmRuntime()
-            File(native, "foldgnuarm.so")
+            File(native, "libfoldgnuarm.so")
         } else null
-        val linker = link("ld.lld", "foldlld.so")
-        val bootPad = link("foldpicopad", "foldpicopad.so")
+        link("ld.lld", "libfoldlld.so")
+        // Clang should validate and execute the APK-owned launcher directly.
+        val linker = File(native, "libfoldlld.so")
+        val bootPad = link("foldpicopad", "libfoldpicopad.so")
         val linkOptions = File(prefix, "share/foldcode/pico-link-options.cmake").apply {
             parentFile?.mkdirs()
             writeText(
@@ -535,7 +540,7 @@ internal class PicoFullBuildRuntimeImpl(private val context: Context) : PicoFull
         compilerLink(File(bin, "clang++"), nativeClang)
         link("llvm-objcopy", "libfoldobjcopy.so")
         link("llvm-objdump", "libfoldobjdump.so")
-        link("llvm-nm", "foldnm.so")
+        link("llvm-nm", "libfoldnm.so")
         link("llvm-ar", "libfoldar.so")
         link("llvm-ranlib", "libfoldranlib.so")
         // Expose the canonical LLVM RISC-V triple. The SDK probes several GNU
@@ -551,7 +556,7 @@ internal class PicoFullBuildRuntimeImpl(private val context: Context) : PicoFull
                 compilerLink(File(bin, "$triple-g++"), nativeClang)
                 link("$triple-objcopy", if (riscv) "libfoldriscvobjcopy.so" else "libfoldobjcopy.so")
                 link("$triple-objdump", if (riscv) "libfoldriscvobjdump.so" else "libfoldobjdump.so")
-                link("$triple-nm", "foldnm.so")
+                link("$triple-nm", "libfoldnm.so")
                 link("$triple-ar", if (riscv) "libfoldriscvar.so" else "libfoldar.so")
                 link("$triple-ranlib", if (riscv) "libfoldriscvranlib.so" else "libfoldranlib.so")
             }

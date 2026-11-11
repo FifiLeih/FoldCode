@@ -16,7 +16,7 @@ internal class NativeGit(private val context: Context) {
     private val helpersDirectory = File(runtimeDirectory, "bin")
     private val templatesDirectory = File(runtimeDirectory, "templates")
     private val caBundle = File(runtimeDirectory, "cacert.pem")
-    private val launcher = File(context.applicationInfo.nativeLibraryDir, "foldgit.so")
+    private val launcher = File(context.applicationInfo.nativeLibraryDir, "libfoldgit.so")
 
     init {
         helpersDirectory.mkdirs()
@@ -26,7 +26,7 @@ internal class NativeGit(private val context: Context) {
             "git-receive-pack",
             "git-upload-archive",
             "git-upload-pack",
-        ).forEach { installLink(it, "foldgit.so") }
+        ).forEach { installLink(it, "libfoldgit.so") }
         installLink("git-remote-http", "libfoldgitremotehttp.so")
         installLink("git-remote-https", "libfoldgitremotehttp.so")
         if (!caBundle.isFile) {
